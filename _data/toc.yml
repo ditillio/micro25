@@ -123,8 +123,8 @@ parts:
               it: Dazi all'importazione
       - folder: 8
         title:
-          en: Externalities and Public Goods
-          it: Esternalità e beni pubblici
+          en: Externalities
+          it: Esternalità
         sections:
           - title:
               en: Externalities and Efficiency
