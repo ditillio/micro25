@@ -104,8 +104,8 @@ parts:
               it: Concorrenza sui prezzi  
   - folder: III
     title: 
-      en: Government Intervention and Externalities
-      it: Interventi statali ed esternalità
+      en: Government Intervention, Externalities and Public Goods
+      it: Interventi statali, esternalità e beni pubblici
     chapters:
       - folder: 7
         title:
@@ -123,8 +123,8 @@ parts:
               it: Dazi all'importazione
       - folder: 8
         title:
-          en: Externalities
-          it: Esternalità
+          en: Externalities and Public Goods
+          it: Esternalità e beni pubblici
         sections:
           - title:
               en: Externalities and Efficiency
@@ -132,6 +132,9 @@ parts:
           - title:
               en: Correcting Externalities
               it: Correzione delle esternalità
+          - title:
+              en: Public Goods
+              it: Beni pubblici
   - folder: IV
     title: 
       en: Labor Market and Savings Decisions
