@@ -104,8 +104,8 @@ parts:
               it: Concorrenza sui prezzi  
   - folder: III
     title: 
-      en: Government Intervention, Externalities and Public Goods
-      it: Interventi statali, esternalità e beni pubblici
+      en: Government Intervention and Externalities
+      it: Interventi statali ed esternalità
     chapters:
       - folder: 7
         title:
