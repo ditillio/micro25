@@ -39,7 +39,7 @@ layout:
 
       - Label:
               coordinates: [13, 0]
-              text: "` \\\\text{    biglietti} `"
+              text: "` \\\\text{    tickets} `"
               # yPixelOffset: 9
               # position: l
       # - Label:
@@ -49,7 +49,7 @@ layout:
       #         position: l
       - Label:
               coordinates: [0, 9]
-              text: "` \\\\text{euro/biglietto}  `"
+              text: "` \\\\text{euro/ticket}  `"
 
 
 # price line with no discrimination
@@ -283,7 +283,7 @@ layout:
       xAxis:
         max: 13
         ticks: 0
-        title: Mercato
+        title: Market
       yAxis:
         max: 9
         ticks: 0
@@ -293,7 +293,7 @@ layout:
 
       - Label:
               coordinates: [13, 0]
-              text: "` \\\\text{    biglietti} `"
+              text: "` \\\\text{    tickets} `"
               # yPixelOffset: 9
               position: l
       # - Label:
@@ -303,7 +303,7 @@ layout:
       #         position: l
       - Label:
               coordinates: [0, 9]
-              text: "` \\\\text{euro/biglietto}  `"
+              text: "` \\\\text{euro/ticket}  `"
 
 # price line with no discrimination
       - Line:
@@ -395,17 +395,17 @@ layout:
 
 
     leftControls:
-      title: " Tipo di discriminazione: "
+      title: " Type of discrimination: "
       divs:
       - html: "`  `"
       checkboxes:
       - param: disc
-        label: "\\text{Discrimina perfettamente}"
+        label: "\\text{Discriminate perfectly}"
 
 
     middleControls:
-      title: No discriminazione
-      description: Selezionare un prezzo lineare uguale per tutti.
+      title: No discrimination
+      description: Choose a linear price for everyone.
       divs:
       - html: "`  `"
       sliders:
@@ -414,8 +414,8 @@ layout:
       show: params.disc == 0
 
     rightControls:
-      title: Discriminazione perfetta
-      description: Selezionare quante unità vendere.
+      title: Perfect discrimination
+      description: Choose how many units to sell.
       divs:
       - html: "`  `"
       sliders:
@@ -436,184 +436,182 @@ layout:
     explanation:
         divs:
           - html: "`
-                  Il costo marginale del monopolista è pari a $1.50$ euro a biglietto.
+                  The monopolist's marginal cost is $1.50$ euro per ticket.
                   `"
           - html: "`
-                  Ad un prezzo lineare di $P=${params.P}$ euro a biglietto,
-                  Alice acquista $ ${calcs.QA}$ biglietti, mentre
-                  Bruno ne acquista $ ${calcs.QB}$. Il profitto del monopolista
-                  (area verde nel grafico di destra, pari alla somma delle aree verdi nei
-                  due grafici a sinistra e al centro) è quindi pari a
+                  At a linear price of  $P=${params.P}$ euro /ticket,
+                  Alice buys $ ${calcs.QA}$ tickets, while
+                  Bruno buys  $ ${calcs.QB}$. The monopolist's profit 
+                    (green area in the graph on the  right, equal to the sum of the green areas in 
+                    the two graphs on the left) is therefore equal to
                   $$
                   (${params.P}-1.50)\\\\times ${calcs.Q}
                   =
                   ${calcs.profit0}
                   \\\\quad \\\\text{euro}
                   $$
-                  Il surplus di Alice (area azzurra nel grafico di sinistra) è
-                  pari a $ ${calcs.gaussA}$. 
-                  Il surplus di Bruno (area azzurra nel grafico di mezzo) è
-                  pari a $ ${calcs.gaussB}$. 
+                  Alice's  surplus (blue area in the graph on the left) is
+                   $ ${calcs.gaussA}$. 
+                  Bruno's surplus  (blue area in the middle graph) is
+                   $ ${calcs.gaussB}$. 
                   `"
             show: params.disc == 0
 
           - html: "`
-                  Il monopolista può vendere il primo biglietto a 8 euro (ad Alice). Il profitto
-                  corrispondente
-                  (area verde nel grafico di destra, pari alla somma delle aree verdi nei
-                  due grafici a sinistra e al centro) è pari a
+                  The monopolist can sell the first ticket at 8 euros (to Alice). The corresponding
+                  profit
+                  (green area in the right graph, equal to the sum of the green areas in the
+                  two graphs on the left and in the center) is
                   $$
                   (8-1.50)
                   =
                   6.50
-                  \\\\quad \\\\text{euro}
+                  \\\\quad \\\\text{euros}
                   $$
-                  Il surplus dei consumatori è zero. 
+                  Consumer surplus is zero. 
                   `"
             show: params.disc == 1 && params.QD == 1
 
           - html: "`
-                  Il monopolista può vendere il secondo biglietto a 7 euro (ad Alice)
-                  <i><b> senza dover ridurre il prezzo del primo</b></i>. Il profitto
-                  corrispondente
-                  (area verde nel grafico di destra, pari alla somma delle aree verdi nei
-                  due grafici a sinistra e al centro) è quindi pari a
+                  The monopolist can sell the second ticket at 7 euros (to Alice)
+                  <i><b> without having to lower the price of the first</b></i>. The corresponding
+                  profit
+                  (green area in the right graph, equal to the sum of the green areas in the
+                  two graphs on the left and in the center) is therefore
                   $$
                   (8-1.50)+(7-1.50)
                   =
                   12
-                  \\\\quad \\\\text{euro}
+                  \\\\quad \\\\text{euros}
                   $$
-                  Il surplus dei consumatori è zero. 
+                  Consumer surplus is zero. 
                   `"
             show: params.disc == 1 && params.QD == 2
 
           - html: "`
-                  Il monopolista può vendere il terzo biglietto a 6 euro (ad Alice)
-                  <i><b> senza dover ridurre il prezzo dei precedenti</b></i>. Il profitto
-                  corrispondente
-                  (area verde nel grafico di destra, pari alla somma delle aree verdi nei
-                  due grafici a sinistra e al centro) è quindi pari a
+                  The monopolist can sell the third ticket at 6 euros (to Alice)
+                  <i><b> without having to lower the price of the previous ones</b></i>. The corresponding
+                  profit
+                  (green area in the right graph, equal to the sum of the green areas in the
+                  two graphs on the left and in the center) is therefore
                   $$
                   (8-1.50)+(7-1.50)+(6-1.50)
                   =
                   16.50
-                  \\\\quad \\\\text{euro}
+                  \\\\quad \\\\text{euros}
                   $$
-                  Il surplus dei consumatori è zero. 
+                  Consumer surplus is zero. 
                   `"
             show: params.disc == 1 && params.QD == 3
 
           - html: "`
-                  Il monopolista può vendere il quarto biglietto a 5 euro (ad Alice)
-                  <i><b> senza dover ridurre il prezzo dei precedenti</b></i>. Il profitto
-                  corrispondente
-                  (area verde nel grafico di destra, pari alla somma delle aree verdi nei
-                  due grafici a sinistra e al centro) è quindi pari a
+                  The monopolist can sell the fourth ticket at 5 euros (to Alice)
+                  <i><b> without having to lower the price of the previous ones</b></i>. The corresponding
+                  profit
+                  (green area in the right graph, equal to the sum of the green areas in the
+                  two graphs on the left and in the center) is therefore
                   $$
                   (8-1.50)+\\\\cdots+(5-1.50)
                   =
                   20
-                  \\\\quad \\\\text{euro}
+                  \\\\quad \\\\text{euros}
                   $$
-                  Il surplus dei consumatori è zero. 
+                  Consumer surplus is zero. 
                   `"
             show: params.disc == 1 && params.QD == 4
 
           - html: "`
-                  Il monopolista può vendere il quinto biglietto a 4 euro (ad Alice)
-                  <i><b> senza dover ridurre il prezzo dei precedenti</b></i>. Il profitto
-                  corrispondente
-                  (area verde nel grafico di destra, pari alla somma delle aree verdi nei
-                  due grafici a sinistra e al centro) è quindi pari a
+                  The monopolist can sell the fifth ticket at 4 euros (to Alice)
+                  <i><b> without having to lower the price of the previous ones</b></i>. The corresponding
+                  profit
+                  (green area in the right graph, equal to the sum of the green areas in the
+                  two graphs on the left and in the center) is therefore
                   $$
                   (8-1.50)+\\\\cdots+(4-1.50)
                   =
                   22.50
-                  \\\\quad \\\\text{euro}
+                  \\\\quad \\\\text{euros}
                   $$
-                  Il surplus dei consumatori è zero. 
+                  Consumer surplus is zero. 
                   `"
             show: params.disc == 1 && params.QD == 5
 
           - html: "`
-                  Il monopolista può vendere il sesto biglietto a 4 euro (a Bruno)
-                  <i><b> senza dover ridurre il prezzo dei precedenti</b></i>. Il profitto
-                  corrispondente
-                  (area verde nel grafico di destra, pari alla somma delle aree verdi nei
-                  due grafici a sinistra e al centro) è quindi pari a
+                  The monopolist can sell the sixth ticket at 4 euros (to Bruno)
+                  <i><b> without having to lower the price of the previous ones</b></i>. The corresponding
+                  profit
+                  (green area in the right graph, equal to the sum of the green areas in the
+                  two graphs on the left and in the center) is therefore
                   $$
                   (8-1.50)+\\\\cdots+(4-1.50)
                   =
                   25
-                  \\\\quad \\\\text{euro}
+                  \\\\quad \\\\text{euros}
                   $$
-                  Il surplus dei consumatori è zero. 
+                  Consumer surplus is zero. 
                   `"
             show: params.disc == 1 && params.QD == 6
 
           - html: "`
-                  Il monopolista può vendere il settimo biglietto a 3 euro (ad Alice)
-                  <i><b> senza dover ridurre il prezzo dei precedenti</b></i>. Il profitto
-                  corrispondente
-                  (area verde nel grafico di destra, pari alla somma delle aree verdi nei
-                  due grafici a sinistra e al centro) è quindi pari a
+                  The monopolist can sell the seventh ticket at 3 euros (to Alice)
+                  <i><b> without having to lower the price of the previous ones</b></i>. The corresponding
+                  profit
+                  (green area in the right graph, equal to the sum of the green areas in the
+                  two graphs on the left and in the center) is therefore
                   $$
                   (8-1.50)+\\\\cdots+(3-1.50)
                   =
                   26.50
-                  \\\\quad \\\\text{euro}
+                  \\\\quad \\\\text{euros}
                   $$
-                  Il surplus dei consumatori è zero. 
+                  Consumer surplus is zero. 
                   `"
             show: params.disc == 1 && params.QD == 7
 
           - html: "`
-                  Il monopolista può vendere l'ottavo biglietto a 3 euro (a Bruno)
-                  <i><b> senza dover ridurre il prezzo dei precedenti</b></i>. Il profitto
-                  corrispondente
-                  (area verde nel grafico di destra, pari alla somma delle aree verdi nei
-                  due grafici a sinistra e al centro) è quindi pari a
+                  The monopolist can sell the eighth ticket at 3 euros (to Bruno)
+                  <i><b> without having to lower the price of the previous ones</b></i>. The corresponding
+                  profit
+                  (green area in the right graph, equal to the sum of the green areas in the
+                  two graphs on the left and in the center) is therefore
                   $$
                   (8-1.50)+\\\\cdots+(3-1.50)
                   =
                   28
-                  \\\\quad \\\\text{euro}
+                  \\\\quad \\\\text{euros}
                   $$
-                  Il surplus dei consumatori è zero. 
+                  Consumer surplus is zero. 
                   `"
             show: params.disc == 1 && params.QD == 8
 
           - html: "`
-                  Il monopolista può vendere il nono biglietto a 2 euro (ad Alice)
-                  <i><b> senza dover ridurre il prezzo dei precedenti</b></i>. Il profitto
-                  corrispondente
-                  (area verde nel grafico di destra, pari alla somma delle aree verdi nei
-                  due grafici a sinistra e al centro) è quindi pari a
+                  The monopolist can sell the ninth ticket at 2 euros (to Alice)
+                  <i><b> without having to lower the price of the previous ones</b></i>. The corresponding
+                  profit
+                  (green area in the right graph, equal to the sum of the green areas in the
+                  two graphs on the left and in the center) is therefore
                   $$
                   (8-1.50)+\\\\cdots+(2-1.50)
                   =
                   28.50
-                  \\\\quad \\\\text{euro}
+                  \\\\quad \\\\text{euros}
                   $$
-                  Il surplus dei consumatori è zero. 
+                  Consumer surplus is zero. 
                   `"
             show: params.disc == 1 && params.QD == 9
 
           - html: "`
-                  Il monopolista può vendere il decimo biglietto a 2 euro (a Bruno)
-                  <i><b> senza dover ridurre il prezzo dei precedenti</b></i>. Il profitto
-                  corrispondente
-                  (area verde nel grafico di destra, pari alla somma delle aree verdi nei
-                  due grafici a sinistra e al centro) è quindi pari a
+                  The monopolist can sell the tenth ticket at 2 euros (to Bruno)
+                  <i><b> without having to lower the price of the previous ones</b></i>. The corresponding
+                  profit
+                  (green area in the right graph, equal to the sum of the green areas in the
+                  two graphs on the left and in the center) is therefore
                   $$
                   (8-1.50)+\\\\cdots+(2-1.50)
                   =
                   29
-                  \\\\quad \\\\text{euro}
+                  \\\\quad \\\\text{euros}
                   $$
-                  Il surplus dei consumatori è zero. 
+                  Consumer surplus is zero. 
                   `"
             show: params.disc == 1 && params.QD == 10
-
-
