@@ -1,17 +1,17 @@
+
 schema: EconSchema
 
 params:
 
-- {name: Q, value: 0.5, min: 0, max: 2.5, round: 0.1}
+- {name: Q, value: 100, min: 0, max: 400, round: 10}
 - {name: disc, value: 0}
 - {name: mc, value: 2}
 
 
 calcs:
-  P: (10)-(4)*(params.Q) # price with no discrimination
+  P: (10)-(params.Q)/(50) # price with no discrimination
   profit: (params.Q)*((calcs.P)-(params.mc)) # profit with no discrimination
   profitdisc: ((8)+((calcs.P)-(2)))*(params.Q)/(2) # profit with discrimination
-  GB: params.Q * 100
 
 
 aspectRatio: 1.3
@@ -23,7 +23,7 @@ layout:
       xAxis:
         orient: bottom
         min: 0
-        max: 3
+        max: 600
         ticks: 0
       yAxis:
         orient: left
@@ -32,18 +32,18 @@ layout:
         ticks: 0
       objects:
       - Label:
-              coordinates: [3, 0]
-              text: "` \\\\text{        GB} `"
+              coordinates: [600, 0]
+              text: "` \\\\; \\\\text{GB} `"
               yPixelOffset: 9
               position: l
       - Label:
-              coordinates: [3, 0]
-              text: "` \\\\text{(hundreds)} `"
+              coordinates: [600, 0]
+              text: "` \\\\text{(millions)} `"
               yPixelOffset: -9
               position: l
       - Label:
             coordinates: [0, 12]
-            text: "` \\\\text{euro/100GB}  `"
+            text: "` \\\\text{euro/GB}  `"
       - Point:
           coordinates: [0, 0]
           droplines:
@@ -55,14 +55,14 @@ layout:
 # market demand function
       - Line:
           yIntercept: (10)
-          slope: -(4)
+          slope: -(1)/(50)
           color: Blue
-          max: (2.5)
+          max: (500)
           strokeWidth: 1.5
           position: b
           label:
-            text: "` D^i `"
-            x: 2.4
+            text: "` D `"
+            x: 480
             bgcolor: none
       - Point:
           coordinates: [0, 10]
@@ -71,21 +71,21 @@ layout:
           color: Blue
           r: 0
       - Point:
-          coordinates: [2.5, 0]
+          coordinates: [500, 0]
           color: Blue
           droplines:
-            vertical: 2.5
+            vertical: 500
           r: 0
 
 # marginal revenue
       - Line:
           yIntercept: (10)
-          slope: -(8)
+          slope: -(1)/(25)
           color: Green
           strokeWidth: 1.5
           position: l
           label:
-            text: "` MR = 10 - 8Q `"
+            text: "` MR = 10 - Q/25 `"
             y: -(2)
 
 
@@ -97,7 +97,7 @@ layout:
           position: b
           label:
             text: "` MC  `"
-            x: (3)
+            x: (580)
       - Point:
           coordinates: [0, 2]
           droplines:
@@ -123,122 +123,134 @@ layout:
           x1: 0
           y1: 2
           x2: params.Q
-          y2: (10)-(4)*(params.Q)
+          y2: (10)-(params.Q)/(50)
           fill: green
-          show: params.Q < 2
+          show: params.Q < 400
       - Area:
-          fn1: min((2),(10)-(4)*(x))
+          fn1: min((200),(10)-(x)/(50))
           fn2: calcs.P
           fill: purple
           opacity: 0.3
           min: 0
           max: params.Q
-          show: params.Q > 2
+          show: params.Q > 400
 
 # consumer surplus / additional prod surplus with discrimination
       - Area:
-          fn1: (10)-(4)*(x)
+          fn1: (10)-(x)/(50)
           fn2: max(2,calcs.P)
           fill: blue
           opacity: 0.2
           min: 0
-          max: min(2,params.Q)
+          max: min(400,params.Q)
           show: params.disc == 0
       - Area:
-          fn1: (10)-(4)*(x)
+          fn1: (10)-(x)/(50)
           fn2: max(2,calcs.P)
           fill: green
           min: 0
-          max: min(2,params.Q)
+          max: min(400,params.Q)
           show: params.disc == 1
 
 # deadweight loss
       - Area:
           fn1: (2)
-          fn2: (10)-(4)*(x)
+          fn2: (10)-(x)/(50)
           fill: gray
           opacity: 0.4
           min: 2
           max: params.Q
-          show: params.Q > 2
+          show: params.Q > 400
 
 
 # evaluation
       - Label:
-          coordinates: [2.3,7]
+          coordinates: [450,7]
           text: "` \\\\LARGE\\\\text{BINGO!} `" 
           position: c
           bgcolor: none
           color: green
-          show: ( params.Q == 1 && params.disc == 0 ) || ( params.Q == 2 && params.disc == 1 )
+          show: ( params.Q == 200 && params.disc == 0 ) || ( params.Q == 400 && params.disc == 1 )
+
+
+
+
+
+
 
     sidebar:
       controls:
 
       - title: FIGURE 5.7
+        # description: Scegliere il tipo di compensazione per visualizzare 
+        #               vincolo di bilancio e scelta ottima corrispondenti ai nuovi prezzi e al 
+        #               reddito compensato.
         radioGroup:
           param: disc
           options:
             - Linear prices
             - Perfect discrimination
 
+
       - title: Linear prices
-        description: Find the quantity that maximizes the monopolist's profit. 
+        description: Find the profit-maximizing quantity. 
         sliders:
         - param: Q
           label: "` Q `"
         divs:
-          - html: "` By producing $Q=0$, the monopolist earns zero profit. `"
+          - html: "` Producing $Q=0$ gives zero profits. `"
             show: params.Q == 0
-          - html: "` To sell $ ${calcs.GB.toFixed(0)}$ gigabytes to each consumer, the price
-                      must be $ ${calcs.P.toFixed(2)}$ euros / 100GB. The corresponding
-                      profit (green area) is:
+          - html: "` To sell $ ${params.Q}$ million gigabytes, the price must be 
+                      equal to $ ${calcs.P.toFixed(2)}$ euro per gigabyte. The corresponding profit
+                      (green area) is equal to
                     $$
                     (${calcs.P.toFixed(2)}-${params.mc})\\\\times ${params.Q.toFixed(1)} = ${calcs.profit.toFixed(2)}
                     $$
                     `"
             show: params.Q > 0
-          - html: "` This is the maximum profit under linear pricing.
-                      Without discrimination, the monopolist cannot do better than this.
+          - html: "` This is the maximum profit achievable with linear prices.
+                      Without discriminating, the monopolist cannot do better.
                      `"
-            show: params.Q == 1
+            show: params.Q == 200
         show: params.disc == 0
 
+
       - title: Perfect discrimination
-        description: Find the quantity that maximizes the monopolist's profit. 
+        description: Find the profit-maximizing quantity. 
         sliders:
         - param: Q
           label: "` Q `"
         divs:
-          - html: "` By producing $Q=0$, the monopolist earns zero profit. `"
+          - html: "` Producing $Q=0$ gives zero profits. `"
             show: params.Q == 0
-          - html: "` By selling $ ${calcs.GB.toFixed(0)} $ gigabytes to each consumer, and perfectly
-                      discriminating the price at which they are sold, the monopolist
-                      captures the entire surplus. Profit (green area) is
-                      $ ${calcs.profitdisc.toFixed(2)} $. Consumer surplus is zero.
+          - html: "` By selling $ ${params.Q} $ million gigabytes, and discriminating perfectly,
+                  the monopolist manages to capture the entire surplus. Profit  (green area) is
+                      equal to $ ${calcs.profitdisc.toFixed(2)} $. Consumer surplus is zero.
                     `"
-            show: params.Q <= 2
-          - html: "` By selling $ ${calcs.GB.toFixed(0)} $ gigabytes to each consumer, and perfectly
-                      discriminating the price at which they are sold, the monopolist
-                      captures the entire surplus. Profit (difference between green and gray area) is
-                      $ ${calcs.profitdisc.toFixed(2)} $. Consumer surplus is zero.
-                    `"
-            show: params.Q > 2
+            show: params.Q > 0
         show: params.disc == 1
 
-    explanation:
-      divs:
-        - html: <br><br>
-          show: params.Q == 0
-        - html: "` The monopolist’s marginal cost is $MC=2$. `"
-        - html: "` The demand curve of each consumer is represented by the curve $D^i$. `"
-        - html: "` At a linear price of $ ${calcs.P.toFixed(2)} $ euros / 100GB, each consumer
-                  buys $ ${calcs.GB.toFixed(0)}$ gigabytes.   `"
-          show: params.disc == 0
-        - html: "` Each consumer obtains a surplus equal to the blue area, and the monopolist
-                  earns a profit equal to the green area. `"
-          show: params.disc == 0 && params.Q <= 2
-        - html: "` Each consumer obtains a surplus equal to the sum of the blue and purple areas,
-                  and the monopolist incurs a loss equal to the sum of the
-                  purple and gray areas. `"
-          show: params.disc == 0 && params.Q > 2
+
+
+
+
+
+    # explanation:
+    #   divs:
+    #     - html: <br><br>
+    #       show: params.Q == 0
+    #     - html: "` Il costo marginale del monopolista è $MC=2$. `"
+    #     - html: "` La curva di domanda di ciascun consumatore è rappresentata dalla curva $D^i$. `"
+    #     - html: "` Ad un prezzo lineare di $ ${calcs.P.toFixed(2)} $ euro / 100GB, ciascun consumatore
+    #               acquista $ ${calcs.GB.toFixed(0)}$ gigabytes.   `"
+    #       show: params.disc == 0
+    #     - html: "` Ciascun consumatore ottiene un surplus pari all'area azzurra, e da ciascun consumatore
+    #               il monopolista ottiene un profitto pari all'area verde. `"
+    #       show: params.disc == 0 && params.Q <= 2
+    #     - html: "` Ciascun consumatore ottiene un surplus pari alla somma delle aree azzurra e viola,
+    #               e da ciascun consumatore il monopolista realizza una perdita pari alla somma delle
+    #               aree viola e grigia. `"
+    #       show: params.disc == 0 && params.Q > 2
+
+
+
