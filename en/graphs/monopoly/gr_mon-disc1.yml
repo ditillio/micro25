@@ -177,7 +177,7 @@ layout:
 
       - Label:
               coordinates: [13, 0]
-              text: "` \\\\text{    biglietti} `"
+              text: "` \\\\text{    tickets} `"
               # yPixelOffset: 9
               # position: l
       # - Label:
@@ -187,7 +187,7 @@ layout:
       #         position: l
       - Label:
               coordinates: [0, 9]
-              text: "` \\\\text{euro/biglietto}  `"
+              text: "` \\\\text{euro/ticket}  `"
 
 
 # Bruno demand
