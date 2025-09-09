@@ -1,24 +1,28 @@
-
 schema: EconSchema
 
 params:
 
 - {name: disc, value: 0}
 - {name: mc, value: 1.5}
-- {name: P, value: 6, min: 2, max: 8}
-- {name: QD, value: 1, min: 1, max: 10}
+- {name: P, value: 3, min: 2, max: 9}
+- {name: QD, value: 1, min: 1, max: 7}
 
 
 calcs:
 
-  QA: max ( (9)-(params.P) , 0 )
-  QB: max ( (5)-(params.P) , 0 )
+  QA: " (params.P >= 8) ? (1) : ( (params.P >= 6) ? (2) : ( (params.P >= 4) ? (3) : ( 4 ) ) ) "
+  QB: " (params.P >= 7) ? (0) : ( (params.P >= 5) ? (1) : ( (params.P >= 3) ? (2) : ( 3 ) ) ) "
   Q: " (params.disc == 0) ? (calcs.QA)+(calcs.QB) : (params.QD) "
+
+  CSA: " (params.P == 9) ? (0) : ( (params.P == 8) ? (1) : ( (params.P == 7) ? (2) : ( (params.P == 6) ? (4) : ( (params.P == 5) ? (6) : ( (params.P == 4) ? (9) : ( (params.P == 3) ? (12) : ( 16 ) ) ) ) ) ) ) "
+  CSB: " (params.P == 9) ? (0) : ( (params.P == 8) ? (0) : ( (params.P == 7) ? (0) : ( (params.P == 6) ? (0) : ( (params.P == 5) ? (1) : ( (params.P == 4) ? (2) : ( (params.P == 3) ? (4) : ( 6 ) ) ) ) ) ) ) "
 
   profit0: (calcs.Q)*((params.P)-(params.mc)) # profit with no discrimination
 
-  gaussA: ((8)-(params.P))*((8)-(params.P)+1)/(2)
-  gaussB: ((4)-(params.P))*((4)-(params.P)+1)/(2)
+  CS: (calcs.CSA)+(calcs.CSB)
+
+  profit1: " (params.QD==1) ? (7.5) : ( (params.QD==2) ? (13) : ( (params.QD==3) ? (17.5) : ( (params.QD==4) ? (21) : ( (params.QD==5) ? (23.5) : ( (params.QD==6) ? (25) : ( 25.5 ) ) ) ) ) ) "
+
 
 aspectRatio: 2
 
@@ -27,63 +31,52 @@ layout:
 
     leftGraph:
       xAxis:
-        max: 13
+        max: 9
         ticks: 0
         title: Alice
       yAxis:
-        max: 9
+        max: 10.5
         ticks: 0
 
 
       objects:
 
       - Label:
-              coordinates: [13, 0]
+              coordinates: [9, 0]
               text: "` \\\\text{    tickets} `"
-              # yPixelOffset: 9
-              # position: l
-      # - Label:
-      #         coordinates: [7.5, 0]
-      #         text: "` \\\\text{(migliaia)} `"
-      #         yPixelOffset: -9
-      #         position: l
       - Label:
-              coordinates: [0, 9]
-              text: "` \\\\text{euro/ticket}  `"
+              coordinates: [0, 10.5]
+              text: "` \\\\text{euros per ticket}  `"
 
+# Alice demand
+      - Point: {coordinates: [1, 9], droplines: {vertical: 1, horizontal: 9}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [2, 7], droplines: {vertical: 2, horizontal: 7}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [3, 5], droplines: {vertical: 3, horizontal: 5}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [4, 3], droplines: {vertical: 4, horizontal: 3}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [5, 1], droplines: {vertical: 5, horizontal: 1}, color: Blue, r: 3, strokeWidth: 0.5}
+
+# ticks
+      - Point: {coordinates: [6, 0], color: lightgrey, r: 0, droplines: {vertical: 6}}
+      - Point: {coordinates: [7, 0], color: lightgrey, r: 0, droplines: {vertical: 7}}
+      - Point: {coordinates: [8, 0], color: lightgrey, r: 0, droplines: {vertical: 8}}
+
+# Alice surplus with no discrimination
+      - Rectangle: {x1: 0, y1: params.P, x2: 1, y2: 9, fill: blue, show: params.P <= 8 && params.disc ==0}
+      - Rectangle: {x1: 1, y1: params.P, x2: 2, y2: 7, fill: blue, show: params.P <= 6 && params.disc ==0}
+      - Rectangle: {x1: 2, y1: params.P, x2: 3, y2: 5, fill: blue, show: params.P <= 4 && params.disc ==0}
+      - Rectangle: {x1: 3, y1: params.P, x2: 4, y2: 3, fill: blue, show: params.P <= 2 && params.disc ==0}
 
 # price line with no discrimination
       - Line:
           yIntercept: params.P
           color: Green
           strokeWidth: 1
+          max: 7
           position: l
           label:
             text: P
-            x: 9
+            x: 7
           show: params.disc == 0
-
-
-
-
-
-# Alice demand
-      - Point: {coordinates: [1, 8], droplines: {vertical: 1, horizontal: 8}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [2, 7], droplines: {vertical: 2, horizontal: 7}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [3, 6], droplines: {vertical: 3, horizontal: 6}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [4, 5], droplines: {vertical: 4, horizontal: 5}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [5, 4], droplines: {vertical: 5, horizontal: 4}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [6, 3], droplines: {vertical: 6, horizontal: 3}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [7, 2], droplines: {vertical: 7, horizontal: 2}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [8, 1], droplines: {vertical: 8, horizontal: 1}, color: Blue, r: 3, strokeWidth: 0.5}
-
-# Alice surplus with no discrimination
-      - Rectangle: {x1: 0, y1: 7, x2: 1, y2: 8, fill: blue, show: params.P <= 7 && params.disc ==0}
-      - Rectangle: {x1: 0, y1: 6, x2: 2, y2: 7, fill: blue, show: params.P <= 6 && params.disc ==0}
-      - Rectangle: {x1: 0, y1: 5, x2: 3, y2: 6, fill: blue, show: params.P <= 5 && params.disc ==0}
-      - Rectangle: {x1: 0, y1: 4, x2: 4, y2: 5, fill: blue, show: params.P <= 4 && params.disc ==0}
-      - Rectangle: {x1: 0, y1: 3, x2: 5, y2: 4, fill: blue, show: params.P <= 3 && params.disc ==0}
-      - Rectangle: {x1: 0, y1: 2, x2: 6, y2: 3, fill: blue, show: params.P <= 2 && params.disc ==0}
 
 # marginal cost
       - Line:
@@ -91,10 +84,10 @@ layout:
           color: Red
           strokeWidth: 1
           position: l
-          max: 8.2
+          max: 7
           label:
             text: MC
-            x: 8.2
+            x: 7
 
 # cost with no discr
       - Rectangle:
@@ -108,11 +101,8 @@ layout:
 # cost with discr
       - Rectangle: {x1: 0, y1: 0, x2: 1, y2: params.mc, fill: red, show: params.QD >= 1 && params.disc == 1}
       - Rectangle: {x1: 1, y1: 0, x2: 2, y2: params.mc, fill: red, show: params.QD >= 2 && params.disc == 1}
-      - Rectangle: {x1: 2, y1: 0, x2: 3, y2: params.mc, fill: red, show: params.QD >= 3 && params.disc == 1}
-      - Rectangle: {x1: 3, y1: 0, x2: 4, y2: params.mc, fill: red, show: params.QD >= 4 && params.disc == 1}
-      - Rectangle: {x1: 4, y1: 0, x2: 5, y2: params.mc, fill: red, show: params.QD >= 5 && params.disc == 1}
-      - Rectangle: {x1: 5, y1: 0, x2: 6, y2: params.mc, fill: red, show: params.QD >= 7 && params.disc == 1}
-      - Rectangle: {x1: 6, y1: 0, x2: 7, y2: params.mc, fill: red, show: params.QD >= 9 && params.disc == 1}
+      - Rectangle: {x1: 2, y1: 0, x2: 3, y2: params.mc, fill: red, show: params.QD >= 4 && params.disc == 1}
+      - Rectangle: {x1: 3, y1: 0, x2: 4, y2: params.mc, fill: red, show: params.QD >= 6 && params.disc == 1}
 
 
 
@@ -120,18 +110,11 @@ layout:
       - Rectangle: {x1: 0, y1: params.mc, x2: calcs.QA, y2: params.P, fill: green, show: params.disc ==0}
 
 # profit with discr
-      - Rectangle: {x1: 0, y1: params.mc, x2: 1, y2: 8, fill: green, show: params.QD >= 1 && params.disc == 1}
+      - Rectangle: {x1: 0, y1: params.mc, x2: 1, y2: 9, fill: green, show: params.QD >= 1 && params.disc == 1}
       - Rectangle: {x1: 1, y1: params.mc, x2: 2, y2: 7, fill: green, show: params.QD >= 2 && params.disc == 1}
-      - Rectangle: {x1: 2, y1: params.mc, x2: 3, y2: 6, fill: green, show: params.QD >= 3 && params.disc == 1}
-      - Rectangle: {x1: 3, y1: params.mc, x2: 4, y2: 5, fill: green, show: params.QD >= 4 && params.disc == 1}
-      - Rectangle: {x1: 4, y1: params.mc, x2: 5, y2: 4, fill: green, show: params.QD >= 5 && params.disc == 1}
-      - Rectangle: {x1: 5, y1: params.mc, x2: 6, y2: 3, fill: green, show: params.QD >= 7 && params.disc == 1}
-      - Rectangle: {x1: 6, y1: params.mc, x2: 7, y2: 2, fill: green, show: params.QD >= 9 && params.disc == 1}
+      - Rectangle: {x1: 2, y1: params.mc, x2: 3, y2: 5, fill: green, show: params.QD >= 4 && params.disc == 1}
+      - Rectangle: {x1: 3, y1: params.mc, x2: 4, y2: 3, fill: green, show: params.QD >= 6 && params.disc == 1}
 
-# ticks
-      - Point: {coordinates: [9, 0], color: lightgrey, r: 0, droplines: {vertical: 9}}
-      - Point: {coordinates: [10, 0], color: lightgrey, r: 0, droplines: {vertical: 10}}
-      - Point: {coordinates: [11, 0], color: lightgrey, r: 0, droplines: {vertical: 11}}
 
 
 
@@ -165,55 +148,51 @@ layout:
 
     middleGraph:
       xAxis:
-        max: 13
+        max: 9
         ticks: 0
         title: Bruno
       yAxis:
-        max: 9
+        max: 10.5
         ticks: 0
 
 
       objects:
 
       - Label:
-              coordinates: [13, 0]
+              coordinates: [9, 0]
               text: "` \\\\text{    tickets} `"
-              # yPixelOffset: 9
-              # position: l
-      # - Label:
-      #         coordinates: [7.5, 0]
-      #         text: "` \\\\text{(migliaia)} `"
-      #         yPixelOffset: -9
-      #         position: l
       - Label:
-              coordinates: [0, 9]
-              text: "` \\\\text{euro/ticket}  `"
+              coordinates: [0, 10.5]
+              text: "` \\\\text{euros per ticket}  `"
 
 
 # Bruno demand
-      - Point: {coordinates: [0, 8], color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [0, 7], color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [0, 6], color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [0, 5], color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [1, 4], droplines: {vertical: 1, horizontal: 4}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [2, 3], droplines: {vertical: 2, horizontal: 3}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [1, 6], droplines: {vertical: 1, horizontal: 6}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [2, 4], droplines: {vertical: 2, horizontal: 4}, color: Blue, r: 3, strokeWidth: 0.5}
       - Point: {coordinates: [3, 2], droplines: {vertical: 3, horizontal: 2}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [4, 1], droplines: {vertical: 4, horizontal: 1}, color: Blue, r: 3, strokeWidth: 0.5}
+
+# ticks
+      - Point: {coordinates: [4, 0], color: lightgrey, r: 0, droplines: {vertical: 4}}
+      - Point: {coordinates: [5, 0], color: lightgrey, r: 0, droplines: {vertical: 5}}
+      - Point: {coordinates: [6, 0], color: lightgrey, r: 0, droplines: {vertical: 6}}
+      - Point: {coordinates: [7, 0], color: lightgrey, r: 0, droplines: {vertical: 7}}
+      - Point: {coordinates: [8, 0], color: lightgrey, r: 0, droplines: {vertical: 8}}
 
 # price line with no discrimination
       - Line:
           yIntercept: params.P
           color: Green
           strokeWidth: 1
+          max: 7
           position: l
           label:
             text: P
-            x: 9
+            x: 7
           show: params.disc == 0
 
 # Bruno surplus with no discrimination
-      - Rectangle: {x1: 0, y1: 3, x2: 1, y2: 4, fill: blue, show: params.P <= 3 && params.disc ==0}
-      - Rectangle: {x1: 0, y1: 2, x2: 2, y2: 3, fill: blue, show: params.P <= 2 && params.disc ==0}
+      - Rectangle: {x1: 0, y1: params.P, x2: 1, y2: 6, fill: blue, show: params.P <= 5 && params.disc ==0}
+      - Rectangle: {x1: 1, y1: params.P, x2: 2, y2: 4, fill: blue, show: params.P <= 3 && params.disc ==0}
 
 
 # marginal cost
@@ -221,11 +200,11 @@ layout:
           yIntercept: params.mc
           color: Red
           strokeWidth: 1
-          # position: l
-          max: 8
+          position: l
+          max: 7
           label:
             text: MC
-            x: 8
+            x: 7
 
 # cost with no discr
       - Rectangle:
@@ -238,9 +217,9 @@ layout:
 
 
 # cost with discr
-      - Rectangle: {x1: 0, y1: 0, x2: 1, y2: params.mc, fill: red, show: params.QD >= 6 && params.disc == 1}
-      - Rectangle: {x1: 1, y1: 0, x2: 2, y2: params.mc, fill: red, show: params.QD >= 8 && params.disc == 1}
-      - Rectangle: {x1: 2, y1: 0, x2: 3, y2: params.mc, fill: red, show: params.QD >= 10 && params.disc == 1}
+      - Rectangle: {x1: 0, y1: 0, x2: 1, y2: params.mc, fill: red, show: params.QD >= 3 && params.disc == 1}
+      - Rectangle: {x1: 1, y1: 0, x2: 2, y2: params.mc, fill: red, show: params.QD >= 5 && params.disc == 1}
+      - Rectangle: {x1: 2, y1: 0, x2: 3, y2: params.mc, fill: red, show: params.QD >= 7 && params.disc == 1}
 
 
 
@@ -248,18 +227,10 @@ layout:
       - Rectangle: {x1: 0, y1: params.mc, x2: calcs.QB, y2: params.P, fill: green, show: params.disc ==0}
 
 # profit with discr
-      - Rectangle: {x1: 0, y1: params.mc, x2: 1, y2: 4, fill: green, show: params.QD >= 6 && params.disc == 1}
-      - Rectangle: {x1: 1, y1: params.mc, x2: 2, y2: 3, fill: green, show: params.QD >= 8 && params.disc == 1}
-      - Rectangle: {x1: 2, y1: params.mc, x2: 3, y2: 2, fill: green, show: params.QD >= 10 && params.disc == 1}
+      - Rectangle: {x1: 0, y1: params.mc, x2: 1, y2: 6, fill: green, show: params.QD >= 3 && params.disc == 1}
+      - Rectangle: {x1: 1, y1: params.mc, x2: 2, y2: 4, fill: green, show: params.QD >= 5 && params.disc == 1}
+      - Rectangle: {x1: 2, y1: params.mc, x2: 3, y2: 2, fill: green, show: params.QD >= 7 && params.disc == 1}
 
-# ticks
-      - Point: {coordinates: [5, 0], color: lightgrey, r: 0, droplines: {vertical: 5}}
-      - Point: {coordinates: [6, 0], color: lightgrey, r: 0, droplines: {vertical: 6}}
-      - Point: {coordinates: [7, 0], color: lightgrey, r: 0, droplines: {vertical: 7}}
-      - Point: {coordinates: [8, 0], color: lightgrey, r: 0, droplines: {vertical: 8}}
-      - Point: {coordinates: [9, 0], color: lightgrey, r: 0, droplines: {vertical: 9}}
-      - Point: {coordinates: [10, 0], color: lightgrey, r: 0, droplines: {vertical: 10}}
-      - Point: {coordinates: [11, 0], color: lightgrey, r: 0, droplines: {vertical: 11}}
 
 
 
@@ -281,50 +252,60 @@ layout:
 
     rightGraph:
       xAxis:
-        max: 13
+        max: 9
         ticks: 0
         title: Market
       yAxis:
-        max: 9
+        max: 10.5
         ticks: 0
 
 
       objects:
 
       - Label:
-              coordinates: [13, 0]
+              coordinates: [9, 0]
               text: "` \\\\text{    tickets} `"
-              # yPixelOffset: 9
               position: l
-      # - Label:
-      #         coordinates: [7.5, 0]
-      #         text: "` \\\\text{(migliaia)} `"
-      #         yPixelOffset: -9
-      #         position: l
       - Label:
-              coordinates: [0, 9]
-              text: "` \\\\text{euro/ticket}  `"
+              coordinates: [0, 10.5]
+              text: "` \\\\text{euros per ticket}  `"
+
+# market demand
+      - Point: {coordinates: [1, 9], droplines: {vertical: 1, horizontal: 9}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [2, 7], droplines: {vertical: 2, horizontal: 7}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [3, 6], droplines: {vertical: 3, horizontal: 6}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [4, 5], droplines: {vertical: 4, horizontal: 5}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [5, 4], droplines: {vertical: 5, horizontal: 4}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [6, 3], droplines: {vertical: 6, horizontal: 3}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [7, 2], droplines: {vertical: 7, horizontal: 2}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [8, 1], droplines: {vertical: 8, horizontal: 1}, color: Blue, r: 3, strokeWidth: 0.5}
+
+
+# consumer surplus with no discrimination
+      - Rectangle: {x1: 0, y1: params.P, x2: 1, y2: 9, fill: blue, show: params.P <= 8 && params.disc ==0}
+      - Rectangle: {x1: 1, y1: params.P, x2: 2, y2: 7, fill: blue, show: params.P <= 6 && params.disc ==0}
+      - Rectangle: {x1: 2, y1: params.P, x2: 3, y2: 6, fill: blue, show: params.P <= 5 && params.disc ==0}
+      - Rectangle: {x1: 3, y1: params.P, x2: 4, y2: 5, fill: blue, show: params.P <= 4 && params.disc ==0}
+      - Rectangle: {x1: 4, y1: params.P, x2: 5, y2: 4, fill: blue, show: params.P <= 3 && params.disc ==0}
+      - Rectangle: {x1: 5, y1: params.P, x2: 6, y2: 3, fill: blue, show: params.P <= 2 && params.disc ==0}
+
+
+# ticks
+      - Point: {coordinates: [4, 0], color: lightgrey, opacity: 2, r: 0, droplines: {vertical: 4}}
+      - Point: {coordinates: [6, 0], color: lightgrey, r: 0, droplines: {vertical: 6}}
+      - Point: {coordinates: [8, 0], color: lightgrey, r: 0, droplines: {vertical: 8}}
 
 # price line with no discrimination
       - Line:
           yIntercept: params.P
           color: Green
           strokeWidth: 1
+          max: 9
           position: l
           label:
             text: P
-            x: 13
+            x: 9
           show: params.disc == 0
-
-# market demand
-      - Point: {coordinates: [1, 8], droplines: {vertical: 1, horizontal: 8}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [2, 7], droplines: {vertical: 2, horizontal: 7}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [3, 6], droplines: {vertical: 3, horizontal: 6}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [4, 5], droplines: {vertical: 4, horizontal: 5}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [6, 4], droplines: {vertical: 6, horizontal: 4}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [8, 3], droplines: {vertical: 8, horizontal: 3}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [10, 2], droplines: {vertical: 10, horizontal: 2}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [12, 1], droplines: {vertical: 12, horizontal: 1}, color: Blue, r: 3, strokeWidth: 0.5}
 
 # marginal cost
       - Line:
@@ -332,9 +313,10 @@ layout:
           color: Red
           strokeWidth: 1
           position: l
+          max: 9
           label:
             text: MC
-            x: 12
+            x: 9
 
 # cost
       - Rectangle:
@@ -348,31 +330,23 @@ layout:
       - Rectangle: {x1: 0, y1: params.mc, x2: calcs.Q, y2: params.P, fill: green, show: params.disc ==0}
 
 # profit with discr
-      - Rectangle: {x1: 0, y1: params.mc, x2: 1, y2: 8, fill: green, show: params.QD >= 1 && params.disc == 1}
+      - Rectangle: {x1: 0, y1: params.mc, x2: 1, y2: 9, fill: green, show: params.QD >= 1 && params.disc == 1}
       - Rectangle: {x1: 1, y1: params.mc, x2: 2, y2: 7, fill: green, show: params.QD >= 2 && params.disc == 1}
       - Rectangle: {x1: 2, y1: params.mc, x2: 3, y2: 6, fill: green, show: params.QD >= 3 && params.disc == 1}
       - Rectangle: {x1: 3, y1: params.mc, x2: 4, y2: 5, fill: green, show: params.QD >= 4 && params.disc == 1}
       - Rectangle: {x1: 4, y1: params.mc, x2: 5, y2: 4, fill: green, show: params.QD >= 5 && params.disc == 1}
-      - Rectangle: {x1: 5, y1: params.mc, x2: 6, y2: 4, fill: green, show: params.QD >= 6 && params.disc == 1}
-      - Rectangle: {x1: 6, y1: params.mc, x2: 7, y2: 3, fill: green, show: params.QD >= 7 && params.disc == 1}
-      - Rectangle: {x1: 7, y1: params.mc, x2: 8, y2: 3, fill: green, show: params.QD >= 8 && params.disc == 1}
-      - Rectangle: {x1: 8, y1: params.mc, x2: 9, y2: 2, fill: green, show: params.QD >= 9 && params.disc == 1}
-      - Rectangle: {x1: 9, y1: params.mc, x2: 10, y2: 2, fill: green, show: params.QD >= 10 && params.disc == 1}
+      - Rectangle: {x1: 5, y1: params.mc, x2: 6, y2: 3, fill: green, show: params.QD >= 6 && params.disc == 1}
+      - Rectangle: {x1: 6, y1: params.mc, x2: 7, y2: 2, fill: green, show: params.QD >= 7 && params.disc == 1}
 
 # evaluation
       - Label:
-          coordinates: [9,7]
+          coordinates: [7,7]
           text: "` \\\\LARGE\\\\text{BINGO!} `" 
           position: c
           bgcolor: none
           color: green
-          show: (params.disc == 0 && params.P == 4) || (params.disc == 1 && params.QD == 10 )
+          show: (params.disc == 0 && params.P == 5) || (params.disc == 1 && params.QD == 7 )
 
-# ticks
-      - Point: {coordinates: [5, 0], color: lightgrey, opacity: 2, r: 0, droplines: {vertical: 5}}
-      - Point: {coordinates: [7, 0], color: lightgrey, r: 0, droplines: {vertical: 7}}
-      - Point: {coordinates: [9, 0], color: lightgrey, r: 0, droplines: {vertical: 9}}
-      - Point: {coordinates: [11, 0], color: lightgrey, r: 0, droplines: {vertical: 11}}
 
 
 
@@ -400,12 +374,12 @@ layout:
       - html: "`  `"
       checkboxes:
       - param: disc
-        label: "\\text{Discriminate perfectly}"
+        label: "\\text{Perfectly discriminate}"
 
 
     middleControls:
       title: No discrimination
-      description: Choose a linear price for everyone.
+      description: Select a single linear price for everyone.
       divs:
       - html: "`  `"
       sliders:
@@ -415,7 +389,7 @@ layout:
 
     rightControls:
       title: Perfect discrimination
-      description: Choose how many units to sell.
+      description: Select how many units to sell.
       divs:
       - html: "`  `"
       sliders:
@@ -436,36 +410,39 @@ layout:
     explanation:
         divs:
           - html: "`
-                  The monopolist's marginal cost is $1.50$ euro per ticket.
+                  The monopolist's marginal cost is $1.50$ euros per ticket.
                   `"
           - html: "`
-                  At a linear price of  $P=${params.P}$ euro /ticket,
+                  At a linear price of $P=${params.P}$ euros per ticket,
                   Alice buys $ ${calcs.QA}$ tickets, while
-                  Bruno buys  $ ${calcs.QB}$. The monopolist's profit 
-                    (green area in the graph on the  right, equal to the sum of the green areas in 
-                    the two graphs on the left) is therefore equal to
+                  Bruno buys $ ${calcs.QB}$. The monopolist's profit
+                  (green area in the right-hand graph, equal to the sum of the green areas in the
+                  two graphs on the left and in the center) is therefore
                   $$
                   (${params.P}-1.50)\\\\times ${calcs.Q}
                   =
                   ${calcs.profit0}
-                  \\\\quad \\\\text{euro}
+                  \\\\quad \\\\text{euros}
                   $$
-                  Alice's  surplus (blue area in the graph on the left) is
-                   $ ${calcs.gaussA}$. 
-                  Bruno's surplus  (blue area in the middle graph) is
-                   $ ${calcs.gaussB}$. 
+                  Alice's surplus (blue area in the left graph) is
+                  $ ${calcs.CSA}$. 
+                  Bruno's surplus (blue area in the center graph) is
+                  $ ${calcs.CSB}$.
+                  Consumer surplus (blue area in the right-hand graph, equal to the
+                  sum of the blue areas in the
+                  two graphs on the left and in the center) is ${calcs.CS}.
                   `"
             show: params.disc == 0
 
           - html: "`
-                  The monopolist can sell the first ticket at 8 euros (to Alice). The corresponding
+                  The monopolist can sell the first ticket at 9 euros (to Alice). The corresponding
                   profit
-                  (green area in the right graph, equal to the sum of the green areas in the
+                  (green area in the right-hand graph, equal to the sum of the green areas in the
                   two graphs on the left and in the center) is
                   $$
-                  (8-1.50)
+                  (9-1.50)
                   =
-                  6.50
+                  ${calcs.profit1}
                   \\\\quad \\\\text{euros}
                   $$
                   Consumer surplus is zero. 
@@ -476,12 +453,12 @@ layout:
                   The monopolist can sell the second ticket at 7 euros (to Alice)
                   <i><b> without having to lower the price of the first</b></i>. The corresponding
                   profit
-                  (green area in the right graph, equal to the sum of the green areas in the
+                  (green area in the right-hand graph, equal to the sum of the green areas in the
                   two graphs on the left and in the center) is therefore
                   $$
-                  (8-1.50)+(7-1.50)
+                  (9-1.50)+(7-1.50)
                   =
-                  12
+                  ${calcs.profit1}
                   \\\\quad \\\\text{euros}
                   $$
                   Consumer surplus is zero. 
@@ -489,15 +466,15 @@ layout:
             show: params.disc == 1 && params.QD == 2
 
           - html: "`
-                  The monopolist can sell the third ticket at 6 euros (to Alice)
+                  The monopolist can sell the third ticket at 6 euros (to Bruno)
                   <i><b> without having to lower the price of the previous ones</b></i>. The corresponding
                   profit
-                  (green area in the right graph, equal to the sum of the green areas in the
+                  (green area in the right-hand graph, equal to the sum of the green areas in the
                   two graphs on the left and in the center) is therefore
                   $$
-                  (8-1.50)+(7-1.50)+(6-1.50)
+                  (9-1.50)+(7-1.50)+(6-1.50)
                   =
-                  16.50
+                  ${calcs.profit1}
                   \\\\quad \\\\text{euros}
                   $$
                   Consumer surplus is zero. 
@@ -508,12 +485,12 @@ layout:
                   The monopolist can sell the fourth ticket at 5 euros (to Alice)
                   <i><b> without having to lower the price of the previous ones</b></i>. The corresponding
                   profit
-                  (green area in the right graph, equal to the sum of the green areas in the
+                  (green area in the right-hand graph, equal to the sum of the green areas in the
                   two graphs on the left and in the center) is therefore
                   $$
-                  (8-1.50)+\\\\cdots+(5-1.50)
+                  (9-1.50)+\\\\cdots+(5-1.50)
                   =
-                  20
+                  ${calcs.profit1}
                   \\\\quad \\\\text{euros}
                   $$
                   Consumer surplus is zero. 
@@ -521,15 +498,15 @@ layout:
             show: params.disc == 1 && params.QD == 4
 
           - html: "`
-                  The monopolist can sell the fifth ticket at 4 euros (to Alice)
+                  The monopolist can sell the fifth ticket at 4 euros (to Bruno)
                   <i><b> without having to lower the price of the previous ones</b></i>. The corresponding
                   profit
-                  (green area in the right graph, equal to the sum of the green areas in the
+                  (green area in the right-hand graph, equal to the sum of the green areas in the
                   two graphs on the left and in the center) is therefore
                   $$
-                  (8-1.50)+\\\\cdots+(4-1.50)
+                  (9-1.50)+\\\\cdots+(4-1.50)
                   =
-                  22.50
+                  ${calcs.profit1}
                   \\\\quad \\\\text{euros}
                   $$
                   Consumer surplus is zero. 
@@ -537,15 +514,15 @@ layout:
             show: params.disc == 1 && params.QD == 5
 
           - html: "`
-                  The monopolist can sell the sixth ticket at 4 euros (to Bruno)
+                  The monopolist can sell the sixth ticket at 3 euros (to Alice)
                   <i><b> without having to lower the price of the previous ones</b></i>. The corresponding
                   profit
-                  (green area in the right graph, equal to the sum of the green areas in the
+                  (green area in the right-hand graph, equal to the sum of the green areas in the
                   two graphs on the left and in the center) is therefore
                   $$
-                  (8-1.50)+\\\\cdots+(4-1.50)
+                  (9-1.50)+\\\\cdots+(3-1.50)
                   =
-                  25
+                  ${calcs.profit1}
                   \\\\quad \\\\text{euros}
                   $$
                   Consumer surplus is zero. 
@@ -553,65 +530,17 @@ layout:
             show: params.disc == 1 && params.QD == 6
 
           - html: "`
-                  The monopolist can sell the seventh ticket at 3 euros (to Alice)
+                  The monopolist can sell the seventh ticket at 2 euros (to Bruno)
                   <i><b> without having to lower the price of the previous ones</b></i>. The corresponding
                   profit
-                  (green area in the right graph, equal to the sum of the green areas in the
+                  (green area in the right-hand graph, equal to the sum of the green areas in the
                   two graphs on the left and in the center) is therefore
                   $$
-                  (8-1.50)+\\\\cdots+(3-1.50)
+                  (9-1.50)+\\\\cdots+(2-1.50)
                   =
-                  26.50
+                  ${calcs.profit1}
                   \\\\quad \\\\text{euros}
                   $$
                   Consumer surplus is zero. 
                   `"
             show: params.disc == 1 && params.QD == 7
-
-          - html: "`
-                  The monopolist can sell the eighth ticket at 3 euros (to Bruno)
-                  <i><b> without having to lower the price of the previous ones</b></i>. The corresponding
-                  profit
-                  (green area in the right graph, equal to the sum of the green areas in the
-                  two graphs on the left and in the center) is therefore
-                  $$
-                  (8-1.50)+\\\\cdots+(3-1.50)
-                  =
-                  28
-                  \\\\quad \\\\text{euros}
-                  $$
-                  Consumer surplus is zero. 
-                  `"
-            show: params.disc == 1 && params.QD == 8
-
-          - html: "`
-                  The monopolist can sell the ninth ticket at 2 euros (to Alice)
-                  <i><b> without having to lower the price of the previous ones</b></i>. The corresponding
-                  profit
-                  (green area in the right graph, equal to the sum of the green areas in the
-                  two graphs on the left and in the center) is therefore
-                  $$
-                  (8-1.50)+\\\\cdots+(2-1.50)
-                  =
-                  28.50
-                  \\\\quad \\\\text{euros}
-                  $$
-                  Consumer surplus is zero. 
-                  `"
-            show: params.disc == 1 && params.QD == 9
-
-          - html: "`
-                  The monopolist can sell the tenth ticket at 2 euros (to Bruno)
-                  <i><b> without having to lower the price of the previous ones</b></i>. The corresponding
-                  profit
-                  (green area in the right graph, equal to the sum of the green areas in the
-                  two graphs on the left and in the center) is therefore
-                  $$
-                  (8-1.50)+\\\\cdots+(2-1.50)
-                  =
-                  29
-                  \\\\quad \\\\text{euros}
-                  $$
-                  Consumer surplus is zero. 
-                  `"
-            show: params.disc == 1 && params.QD == 10

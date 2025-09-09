@@ -1,16 +1,14 @@
-
 schema: EconSchema
 
 params:
 
-- {name: Q, value: 0, min: 0, max: 7}
 - {name: disc, value: 0}
 - {name: mc, value: 1.5}
+- {name: P, value: 3, min: 2, max: 9}
+- {name: QD, value: 1, min: 1, max: 7}
 
-- {name: P, value: 6, min: 2, max: 7}
-- {name: PA, value: 4, min: 1, max: 7}
-- {name: PB, value: 4, min: 1, max: 7}
-
+- {name: PA, value: 5, min: 2, max: 9}
+- {name: PB, value: 5, min: 2, max: 6}
 
 
 calcs:
@@ -18,41 +16,87 @@ calcs:
   PA: " (params.disc == 0) ? (params.P) : (params.PA) "
   PB: " (params.disc == 0) ? (params.P) : (params.PB) "
 
-  QA: max((0),(8)-(calcs.PA))
-  QB: max((0),(5)-(calcs.PB))
+  QA: " (calcs.PA >= 8) ? (1) : ( (calcs.PA >= 6) ? (2) : ( (calcs.PA >= 4) ? (3) : ( 4 ) ) ) "
+  QB: " (calcs.PB >= 7) ? (0) : ( (calcs.PB >= 5) ? (1) : ( (calcs.PB >= 3) ? (2) : ( 3 ) ) ) "
+  Q: " (params.disc == 0) ? (calcs.QA)+(calcs.QB) : (params.QD) "
 
-  profit: (500)*(calcs.QA)*((calcs.PA)-(params.mc))+(500)*(calcs.QB)*((calcs.PB)-(params.mc)) # profit
+  CSA: " (params.P == 9) ? (0) : ( (params.P == 8) ? (1) : ( (params.P == 7) ? (2) : ( (params.P == 6) ? (4) : ( (params.P == 5) ? (6) : ( (params.P == 4) ? (9) : ( (params.P == 3) ? (12) : ( 16 ) ) ) ) ) ) ) "
+  CSB: " (params.P == 9) ? (0) : ( (params.P == 8) ? (0) : ( (params.P == 7) ? (0) : ( (params.P == 6) ? (0) : ( (params.P == 5) ? (1) : ( (params.P == 4) ? (2) : ( (params.P == 3) ? (4) : ( 6 ) ) ) ) ) ) ) "
+
+  CSAD: " (params.PA == 9) ? (0) : ( (params.PA == 8) ? (1) : ( (params.PA == 7) ? (2) : ( (params.PA == 6) ? (4) : ( (params.PA == 5) ? (6) : ( (params.PA == 4) ? (9) : ( (params.PA == 3) ? (12) : ( 16 ) ) ) ) ) ) ) "
+  CSBD: " (params.PB == 9) ? (0) : ( (params.PB == 8) ? (0) : ( (params.PB == 7) ? (0) : ( (params.PB == 6) ? (0) : ( (params.PB == 5) ? (1) : ( (params.PB == 4) ? (2) : ( (params.PB == 3) ? (4) : ( 6 ) ) ) ) ) ) ) "
+
+  profit0: (calcs.Q)*((params.P)-(params.mc)) # profit with no discrimination
+
+  CS: (calcs.CSA)+(calcs.CSB)
+
+  profit3: (calcs.QA)*((calcs.PA)-(params.mc))+(calcs.QB)*((calcs.PB)-(params.mc)) # profit with discrimination
 
 
-aspectRatio: 1.3
+aspectRatio: 2
 
 layout:
-  TwoHorizontalGraphsPlusSidebar:
+  ThreeHorizontalGraphs:
 
     leftGraph:
       xAxis:
-        max: 7.5
+        max: 9
         ticks: 0
-        title: Group A
+        title: Alice
       yAxis:
-        orient: left
-        min: -(5.5)
-        max: 8
+        max: 10.5
         ticks: 0
-
 
       objects:
 
       - Label:
-              coordinates: [7.5, 0]
-              text: "` \\\\text{tickets} `"
-              yPixelOffset: 0
-              position: l
+              coordinates: [9, 0]
+              text: "` \\\\text{    tickets} `"
       - Label:
-              coordinates: [0, 8]
-              text: "` \\\\text{euro/ticket}  `"
-              xPixelOffset: 0
+              coordinates: [0, 10.5]
+              text: "` \\\\text{euros/ticket}  `"
 
+# Alice demand
+      - Point: {coordinates: [1, 9], droplines: {vertical: 1, horizontal: 9}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [2, 7], droplines: {vertical: 2, horizontal: 7}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [3, 5], droplines: {vertical: 3, horizontal: 5}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [4, 3], droplines: {vertical: 4, horizontal: 3}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [5, 1], droplines: {vertical: 5, horizontal: 1}, color: Blue, r: 3, strokeWidth: 0.5}
+
+# ticks
+      - Point: {coordinates: [6, 0], color: lightgrey, r: 0, droplines: {vertical: 6}}
+      - Point: {coordinates: [7, 0], color: lightgrey, r: 0, droplines: {vertical: 7}}
+      - Point: {coordinates: [8, 0], color: lightgrey, r: 0, droplines: {vertical: 8}}
+
+# Alice surplus with or without discrimination
+      - Rectangle: {x1: 0, y1: calcs.PA, x2: 1, y2: 9, fill: blue, show: calcs.PA <= 8}
+      - Rectangle: {x1: 1, y1: calcs.PA, x2: 2, y2: 7, fill: blue, show: calcs.PA <= 6}
+      - Rectangle: {x1: 2, y1: calcs.PA, x2: 3, y2: 5, fill: blue, show: calcs.PA <= 4}
+      - Rectangle: {x1: 3, y1: calcs.PA, x2: 4, y2: 3, fill: blue, show: calcs.PA <= 2}
+
+# price line with no discrimination
+      - Line:
+          yIntercept: params.P
+          color: Green
+          strokeWidth: 1
+          max: 7
+          position: l
+          label:
+            text: P
+            x: 7
+          show: params.disc == 0
+
+# price line with discrimination
+      - Line:
+          yIntercept: calcs.PA
+          color: Green
+          strokeWidth: 1
+          max: 7
+          position: l
+          label:
+            text: P_A
+            x: 7
+          show: params.disc == 1
 
 # marginal cost
       - Line:
@@ -60,101 +104,88 @@ layout:
           color: Red
           strokeWidth: 1
           position: l
+          max: 7
           label:
             text: MC
-            x: 7.3
+            x: 7
 
-# price line
-      - Line:
-          yIntercept: calcs.PA
-          color: Green
-          strokeWidth: 1
-          position: l
-          label:
-            text: P
-            x: 7.5
-          show: params.disc == 0
-          drag:
-            - vertical: P
-      - Line:
-          yIntercept: calcs.PA
-          color: Green
-          strokeWidth: 1
-          position: l
-          label:
-            text: P_A
-            x: 7.5
-          show: params.disc == 1
-          drag:
-            - vertical: PA
+# cost with or without discr
+      - Rectangle:
+          x1: 0
+          y1: 0
+          x2: calcs.QA
+          y2: params.mc
+          fill: red
 
-# individual demand group A
-      - Point: {coordinates: [0.96, 7], droplines: {vertical: 1, horizontal: 7}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [2, 6], droplines: {vertical: 2, horizontal: 6}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [3, 5], droplines: {vertical: 3, horizontal: 5}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [4, 4], droplines: {vertical: 4, horizontal: 4}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [5, 3], droplines: {vertical: 5, horizontal: 3}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [6, 2], droplines: {vertical: 6, horizontal: 2}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [7, 1], droplines: {vertical: 7, horizontal: 1}, color: Blue, r: 3, strokeWidth: 0.5}
-
-# marginal revenue group A
-      - Point: {coordinates: [1.04, 7], color: Green, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [2, 5], color: Green, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [3, 3], color: Green, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [4, 1], color: Green, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [5, -1], droplines: {vertical: 5, horizontal: -1}, color: Green, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [6, -3], droplines: {vertical: 6, horizontal: -3}, color: Green, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [7, -5], droplines: {vertical: 7, horizontal: -5}, color: Green, r: 3, strokeWidth: 0.5}
-
-# profit from group A
+# profit with or without discrimination
       - Rectangle: {x1: 0, y1: params.mc, x2: calcs.QA, y2: calcs.PA, fill: green}
 
 # evaluation
       - Label:
-          coordinates: [5,7]
+          coordinates: [5,9]
           text: "` \\\\LARGE\\\\text{BINGO!} `" 
           position: c
           bgcolor: none
           color: green
-          show: (params.disc == 0 && calcs.PA == 4) || (params.disc == 1 && calcs.PA == 5)
+          show: (params.disc == 1 && calcs.PA == 7)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    rightGraph:
+    middleGraph:
       xAxis:
-        max: 7.5
+        max: 9
         ticks: 0
-        title: Group B
+        title: Bruno
       yAxis:
-        orient: left
-        min: -(5.5)
-        max: 8
+        max: 10.5
         ticks: 0
-
 
       objects:
 
       - Label:
-              coordinates: [7.5, 0]
-              text: "` \\\\text{tickets} `"
-              yPixelOffset: 0
-              position: l
+              coordinates: [9, 0]
+              text: "` \\\\text{    tickets} `"
       - Label:
-              coordinates: [0, 8]
-              text: "` \\\\text{euro/ticket}  `"
-              xPixelOffset: 0
+              coordinates: [0, 10.5]
+              text: "` \\\\text{euros/ticket}  `"
 
+# Bruno demand
+      - Point: {coordinates: [1, 6], droplines: {vertical: 1, horizontal: 6}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [2, 4], droplines: {vertical: 2, horizontal: 4}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [3, 2], droplines: {vertical: 3, horizontal: 2}, color: Blue, r: 3, strokeWidth: 0.5}
+
+# ticks
+      - Point: {coordinates: [4, 0], color: lightgrey, r: 0, droplines: {vertical: 4}}
+      - Point: {coordinates: [5, 0], color: lightgrey, r: 0, droplines: {vertical: 5}}
+      - Point: {coordinates: [6, 0], color: lightgrey, r: 0, droplines: {vertical: 6}}
+      - Point: {coordinates: [7, 0], color: lightgrey, r: 0, droplines: {vertical: 7}}
+      - Point: {coordinates: [8, 0], color: lightgrey, r: 0, droplines: {vertical: 8}}
+
+# price line with no discrimination
+      - Line:
+          yIntercept: params.P
+          color: Green
+          strokeWidth: 1
+          max: 7
+          position: l
+          label:
+            text: P
+            x: 7
+          show: params.disc == 0
+
+# price line with discrimination
+      - Line:
+          yIntercept: calcs.PB
+          color: Green
+          strokeWidth: 1
+          max: 7
+          position: l
+          label:
+            text: P_B
+            x: 7
+          show: params.disc == 1
+
+# Bruno surplus with or without discrimination
+      - Rectangle: {x1: 0, y1: calcs.PB, x2: 1, y2: 6, fill: blue, show: calcs.PB <= 5}
+      - Rectangle: {x1: 1, y1: calcs.PB, x2: 2, y2: 4, fill: blue, show: calcs.PB <= 3}
 
 # marginal cost
       - Line:
@@ -162,167 +193,232 @@ layout:
           color: Red
           strokeWidth: 1
           position: l
+          max: 7
           label:
             text: MC
-            x: 7.3
+            x: 7
 
-# price line
-      - Line:
-          yIntercept: calcs.PB
-          color: Green
-          strokeWidth: 1
-          position: l
-          label:
-            text: P
-            x: 7.5
-          show: params.disc == 0
-          drag:
-            - vertical: P
-      - Line:
-          yIntercept: calcs.PB
-          color: Green
-          strokeWidth: 1
-          position: l
-          label:
-            text: P_B
-            x: 7.5
-          show: params.disc == 1
-          drag:
-            - vertical: PB
+# cost with or without discr
+      - Rectangle:
+          x1: 0
+          y1: 0
+          x2: calcs.QB
+          y2: params.mc
+          fill: red
 
-
-# individual demand group B
-      - Point: {coordinates: [0.96, 4], droplines: {vertical: 1, horizontal: 4}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [2, 3], droplines: {vertical: 2, horizontal: 3}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [3, 2], droplines: {vertical: 3, horizontal: 2}, color: Blue, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [4, 1], droplines: {vertical: 4, horizontal: 1}, color: Blue, r: 3, strokeWidth: 0.5}
-
-# marginal revenue group B
-      - Point: {coordinates: [1.04, 4], color: Green, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [2, 2], color: Green, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [3, 0], color: Green, r: 3, strokeWidth: 0.5}
-      - Point: {coordinates: [4, -2], droplines: {vertical: 4, horizontal: -2}, color: Green, r: 3, strokeWidth: 0.5}
-
-# profit from group B
+# profit with or without discrimination
       - Rectangle: {x1: 0, y1: params.mc, x2: calcs.QB, y2: calcs.PB, fill: green}
 
 # evaluation
       - Label:
-          coordinates: [5,7]
+          coordinates: [5,9]
           text: "` \\\\LARGE\\\\text{BINGO!} `" 
           position: c
           bgcolor: none
           color: green
-          show: (params.disc == 0 && calcs.PB == 4) || (params.disc == 1 && calcs.PB == 3)
+          show: (params.disc == 1 && calcs.PB == 4)
 
+    rightGraph:
+      xAxis:
+        max: 9
+        ticks: 0
+        title: Market
+      yAxis:
+        max: 10.5
+        ticks: 0
 
+      objects:
 
+      - Label:
+              coordinates: [9, 0]
+              text: "` \\\\text{    tickets} `"
+              position: l
+      - Label:
+              coordinates: [0, 10.5]
+              text: "` \\\\text{euros/ticket}  `"
 
+# market demand
+      - Point: {coordinates: [1, 9], droplines: {vertical: 1, horizontal: 9}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [2, 7], droplines: {vertical: 2, horizontal: 7}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [3, 6], droplines: {vertical: 3, horizontal: 6}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [4, 5], droplines: {vertical: 4, horizontal: 5}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [5, 4], droplines: {vertical: 5, horizontal: 4}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [6, 3], droplines: {vertical: 6, horizontal: 3}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [7, 2], droplines: {vertical: 7, horizontal: 2}, color: Blue, r: 3, strokeWidth: 0.5}
+      - Point: {coordinates: [8, 1], droplines: {vertical: 8, horizontal: 1}, color: Blue, r: 3, strokeWidth: 0.5}
 
+# consumer surplus with no discrimination
+      - Rectangle: {x1: 0, y1: params.P, x2: 1, y2: 9, fill: blue, show: params.P <= 8 && params.disc ==0}
+      - Rectangle: {x1: 1, y1: params.P, x2: 2, y2: 7, fill: blue, show: params.P <= 6 && params.disc ==0}
+      - Rectangle: {x1: 2, y1: params.P, x2: 3, y2: 6, fill: blue, show: params.P <= 5 && params.disc ==0}
+      - Rectangle: {x1: 3, y1: params.P, x2: 4, y2: 5, fill: blue, show: params.P <= 4 && params.disc ==0}
+      - Rectangle: {x1: 4, y1: params.P, x2: 5, y2: 4, fill: blue, show: params.P <= 3 && params.disc ==0}
+      - Rectangle: {x1: 5, y1: params.P, x2: 6, y2: 3, fill: blue, show: params.P <= 2 && params.disc ==0}
 
+# ticks
+      - Point: {coordinates: [4, 0], color: lightgrey, opacity: 2, r: 0, droplines: {vertical: 4}}
+      - Point: {coordinates: [6, 0], color: lightgrey, r: 0, droplines: {vertical: 6}}
+      - Point: {coordinates: [8, 0], color: lightgrey, r: 0, droplines: {vertical: 8}}
 
-
-
-    sidebar:
-      controls:
-
-      - title: FIGURE 5.8
-
-        # description: Choose the type of compensation to display 
-        #               the budget constraint and the optimal choice corresponding 
-        #               to the new prices and compensated income.
-
-        # divs:
-        #   - html: "` profit = ${calcs.profit} `"
-
-        radioGroup:
-          param: disc
-          options:
-            - Choose uniform price
-            - Choose different prices by group
-
-
-      - title: Uniform Price
-        description: Find the price (the same for both groups) that maximizes the monopolist's profit.
-        sliders:
-        - param: P
-          label: "` P `"
-        divs:
-          - html: "` At this price ($P=${params.P}$), profit equals ${calcs.profit}.
-                      A higher profit can be obtained by choosing a different uniform price.
-                       `"
-            show: params.P !== 4
-          - html: "` At this price ($P=${params.P}$), profit equals ${calcs.profit}.
-                      A higher profit cannot be obtained by choosing a different uniform price.
-                      However, a higher profit can be achieved by choosing different prices for the two groups!
-                       `"
-            show: params.P == 4
-        show: params.disc == 0
-
-
-      - title: Separate Prices by Group
-        description: Find the prices (which may differ for the two groups) that maximize the monopolist's profit.
-        sliders:
-        - param: PA
-          label: "` P_A `"
-        - param: PB
-          label: "` P_B `"
-        divs:
-          - html: "` At these prices ($P_A=${params.PA}$ and $P_B=${params.PB}$), profit 
-                      equals ${calcs.profit}.
-                      A higher profit can be obtained by choosing different prices.
-                       `"
-            show: params.PA !== 5 && params.PB !== 3
-          - html: "` At these prices ($P_A=${params.PA}$ and $P_B=${params.PB}$), profit 
-                      equals ${calcs.profit}.
-                      A higher profit cannot be obtained by changing the price for group A.
-                      However, a higher profit can be obtained by changing the price for group B!
-                       `"
-            show: params.PA == 5 && params.PB !== 3
-          - html: "` At these prices ($P_A=${params.PA}$ and $P_B=${params.PB}$), profit 
-                      equals ${calcs.profit}.
-                      A higher profit cannot be obtained by changing the price for group B.
-                      However, a higher profit can be obtained by changing the price for group A!
-                       `"
-            show: params.PA !== 5 && params.PB == 3
-          - html: "` At these prices ($P_A=${params.PA}$ and $P_B=${params.PB}$), profit 
-                      equals ${calcs.profit}.
-                      No higher profit can be obtained!
-                       `"
-            show: params.PA == 5 && params.PB == 3
-        show: params.disc == 1
-
-
-
-
-
-
-
-
-    explanation:
-      divs:
-        - html: "` The demand function is represented by the blue dots. `"
-        - html: "` The marginal revenue function is represented by the green dots. `"
-        - html: "` At price $P=${params.P}$, each of the 500 consumers in group A
-                  demands ${calcs.QA} units, and each of the 500 consumers in group B 
-                  demands ${calcs.QB} units. Profit is therefore equal to 
-                    $$
-                    500\\\\times (${params.P}-${params.mc})\\\\times ${calcs.QA}
-                    +
-                    500\\\\times (${params.P}-${params.mc})\\\\times ${calcs.QB}=${calcs.profit}
-                    $$ `"
+# price line with no discrimination
+      - Line:
+          yIntercept: params.P
+          color: Green
+          strokeWidth: 1
+          max: 9
+          position: l
+          label:
+            text: P
+            x: 9
           show: params.disc == 0
-        - html: "` At prices $P_A=${params.PA}$ and $P_B=${params.PB}$, each of the 500
-                  consumers in group A
-                  demands ${calcs.QA} units, and each of the 500 consumers in group B 
-                  demands ${calcs.QB} units. Profit is therefore equal to 
-                    $$
-                    500\\\\times (${params.P}-${params.mc})\\\\times ${calcs.QA}
-                    +
-                    500\\\\times (${params.P}-${params.mc})\\\\times ${calcs.QB}=${calcs.profit}
-                    $$ `"
+
+# reminder optimal price line with no discrimination
+      - Line:
+          yIntercept: 5
+          color: Green
+          strokeWidth: 1
+          max: 9
+          position: l
+          label:
+            text: P
+            x: 9
           show: params.disc == 1
 
+# marginal cost
+      - Line:
+          yIntercept: params.mc
+          color: Red
+          strokeWidth: 1
+          position: l
+          max: 9
+          label:
+            text: MC
+            x: 9
 
+# cost without discr
+      - Rectangle:
+          x1: 0
+          y1: 0
+          x2: calcs.Q
+          y2: params.mc
+          fill: red
+          show: params.disc == 0
 
+# reminder cost without discr
+      - Rectangle:
+          x1: 0
+          y1: 0
+          x2: 4
+          y2: params.mc
+          fill: red
+          show: params.disc == 1
 
+# profit with no discrimination
+      - Rectangle: {x1: 0, y1: params.mc, x2: calcs.Q, y2: params.P, fill: green, show: params.disc ==0}
+
+# reminder max profit with no discrimination
+      - Rectangle: {x1: 0, y1: params.mc, x2: 4, y2: 5, fill: green, show: params.disc == 1}
+
+# evaluation
+      - Label:
+          coordinates: [7,7]
+          text: "` \\\\LARGE\\\\text{BINGO!} `" 
+          position: c
+          bgcolor: none
+          color: green
+          show: (params.disc == 0 && params.P == 5) || (params.disc == 1 && params.QD == 7 )
+
+      - Arrow:
+          begin: [6,8]
+          end: [2,3]
+          color: Darkgreen
+          strokeWidth: 1
+          bgcolor: none
+          show: params.disc == 1
+      - Label:
+          text: " \\text{maximum profit without} "
+          coordinates: [6,8]
+          yPixelOffset: 9
+          show: params.disc == 1
+      - Label:
+          text: " \\text{discrimination} = 14 "
+          coordinates: [6,8]
+          yPixelOffset: -9
+          show: params.disc == 1
+
+    leftControls:
+      title: " Type of discrimination: "
+      divs:
+      - html: "`  `"
+      checkboxes:
+      - param: disc
+        label: "\\text{Age-based discrimination}"
+
+    middleControls:
+      title: No discrimination
+      description: Select a single linear price for everyone.
+      divs:
+      - html: "`  `"
+      sliders:
+      - param: P
+        label: P
+      show: params.disc == 0
+
+    rightControls:
+      title: Age-based discrimination
+      description: Select a linear price for young customers and one for adults.
+      divs:
+      - html: "`  `"
+      sliders:
+      - param: PA
+        label: P_A
+      - param: PB
+        label: P_B
+      show: params.disc == 1
+
+    explanation:
+        divs:
+          - html: "`
+                  The monopolist’s marginal cost is $1.50$ euros per ticket.
+                  `"
+          - html: "`
+                  At a linear price of $P=${params.P}$ euros per ticket,
+                  Alice buys $ ${calcs.QA}$ tickets, while
+                  Bruno buys $ ${calcs.QB}$. The monopolist’s profit
+                  (green area in the right graph, equal to the sum of the green areas in
+                  the left and middle graphs) is therefore
+                  $$
+                  (${params.P}-1.50)\\\\times ${calcs.Q}
+                  =
+                  ${calcs.profit0}
+                  \\\\quad \\\\text{euros}
+                  $$
+                  Alice’s surplus (blue area in the left graph) is
+                  $ ${calcs.CSA}$. 
+                  Bruno’s surplus (blue area in the middle graph) is
+                  $ ${calcs.CSB}$. 
+                  Consumer surplus (blue area in the right graph, equal to the
+                  sum of the blue areas in the
+                  left and middle graphs) is ${calcs.CS}.
+                  `"
+            show: params.disc == 0
+
+          - html: "`
+                  At linear prices $P_A=${calcs.PA}$ and $P_B=${calcs.PB}$ 
+                  Alice and Bruno buy $ ${calcs.QA}$
+                  and $ ${calcs.QB}$ tickets, respectively. The monopolist’s profit
+                  (sum of the green areas in
+                  the left and middle graphs) is therefore
+                  $$
+                  (${calcs.PA}-1.50)\\\\times ${calcs.QA}
+                  +(${calcs.PB}-1.50)\\\\times ${calcs.QB}
+                  =
+                  ${calcs.profit3}
+                  \\\\quad \\\\text{euros}
+                  $$
+                  Alice’s surplus (blue area in the left graph) is
+                  $ ${calcs.CSAD}$. 
+                  Bruno’s surplus (blue area in the middle graph) is
+                  $ ${calcs.CSBD}$. 
+                  `"
+            show: params.disc == 1
