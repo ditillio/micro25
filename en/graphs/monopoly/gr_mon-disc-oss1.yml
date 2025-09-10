@@ -42,7 +42,7 @@ layout:
       xAxis:
         max: 9
         ticks: 0
-        title: Alice
+        title: Group A
       yAxis:
         max: 10.5
         ticks: 0
@@ -50,8 +50,15 @@ layout:
       objects:
 
       - Label:
-              coordinates: [9, 0]
+              coordinates: [7, 0]
               text: "` \\\\text{    tickets} `"
+              yPixelOffset: 9
+              position: l
+      - Label:
+              coordinates: [6.6, 0]
+              text: "` \\\\text{(thousands)} `"
+              yPixelOffset: -9
+              position: l
       - Label:
               coordinates: [0, 10.5]
               text: "` \\\\text{euros/ticket}  `"
@@ -65,8 +72,6 @@ layout:
 
 # ticks
       - Point: {coordinates: [6, 0], color: lightgrey, r: 0, droplines: {vertical: 6}}
-      - Point: {coordinates: [7, 0], color: lightgrey, r: 0, droplines: {vertical: 7}}
-      - Point: {coordinates: [8, 0], color: lightgrey, r: 0, droplines: {vertical: 8}}
 
 # Alice surplus with or without discrimination
       - Rectangle: {x1: 0, y1: calcs.PA, x2: 1, y2: 9, fill: blue, show: calcs.PA <= 8}
@@ -129,11 +134,26 @@ layout:
           color: green
           show: (params.disc == 1 && calcs.PA == 7)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     middleGraph:
       xAxis:
         max: 9
         ticks: 0
-        title: Bruno
+        title: Group B
       yAxis:
         max: 10.5
         ticks: 0
@@ -141,8 +161,15 @@ layout:
       objects:
 
       - Label:
-              coordinates: [9, 0]
+              coordinates: [7, 0]
               text: "` \\\\text{    tickets} `"
+              yPixelOffset: 9
+              position: l
+      - Label:
+              coordinates: [6.6, 0]
+              text: "` \\\\text{(thousands)} `"
+              yPixelOffset: -9
+              position: l
       - Label:
               coordinates: [0, 10.5]
               text: "` \\\\text{euros/ticket}  `"
@@ -156,8 +183,6 @@ layout:
       - Point: {coordinates: [4, 0], color: lightgrey, r: 0, droplines: {vertical: 4}}
       - Point: {coordinates: [5, 0], color: lightgrey, r: 0, droplines: {vertical: 5}}
       - Point: {coordinates: [6, 0], color: lightgrey, r: 0, droplines: {vertical: 6}}
-      - Point: {coordinates: [7, 0], color: lightgrey, r: 0, droplines: {vertical: 7}}
-      - Point: {coordinates: [8, 0], color: lightgrey, r: 0, droplines: {vertical: 8}}
 
 # price line with no discrimination
       - Line:
@@ -230,8 +255,14 @@ layout:
       objects:
 
       - Label:
-              coordinates: [9, 0]
+              coordinates: [8.5, 0]
               text: "` \\\\text{    tickets} `"
+              yPixelOffset: 9
+              position: l
+      - Label:
+              coordinates: [8.3, 0]
+              text: "` \\\\text{(thousands)} `"
+              yPixelOffset: -9
               position: l
       - Label:
               coordinates: [0, 10.5]
@@ -383,30 +414,30 @@ layout:
                   `"
           - html: "`
                   At a linear price of $P=${params.P}$ euros per ticket,
-                  Alice buys $ ${calcs.QA}$ tickets, while
-                  Bruno buys $ ${calcs.QB}$. The monopolist’s profit
+                  group A buys $ ${calcs.QA}$ thousand tickets, while
+                  group B buys $ ${calcs.QB}$ thousand. The monopolist’s profit
                   (green area in the right graph, equal to the sum of the green areas in
                   the left and middle graphs) is therefore
                   $$
                   (${params.P}-1.50)\\\\times ${calcs.Q}
                   =
                   ${calcs.profit0}
-                  \\\\quad \\\\text{euros}
+                  \\\\quad \\\\text{thousand euros}
                   $$
-                  Alice’s surplus (blue area in the left graph) is
-                  $ ${calcs.CSA}$. 
-                  Bruno’s surplus (blue area in the middle graph) is
-                  $ ${calcs.CSB}$. 
+                  Group A’s surplus (blue area in the left graph) is
+                  $ ${calcs.CSA}$ thousand euros. 
+                  Group B’s surplus (blue area in the middle graph) is
+                  $ ${calcs.CSB}$ thousand euros. 
                   Consumer surplus (blue area in the right graph, equal to the
                   sum of the blue areas in the
-                  left and middle graphs) is ${calcs.CS}.
+                  left and middle graphs) is ${calcs.CS} thousand euros.
                   `"
             show: params.disc == 0
 
           - html: "`
                   At linear prices $P_A=${calcs.PA}$ and $P_B=${calcs.PB}$ 
-                  Alice and Bruno buy $ ${calcs.QA}$
-                  and $ ${calcs.QB}$ tickets, respectively. The monopolist’s profit
+                  groups A and B  buy $ ${calcs.QA}$
+                  and $ ${calcs.QB}$ thousand tickets, respectively. The monopolist’s profit
                   (sum of the green areas in
                   the left and middle graphs) is therefore
                   $$
@@ -414,11 +445,11 @@ layout:
                   +(${calcs.PB}-1.50)\\\\times ${calcs.QB}
                   =
                   ${calcs.profit3}
-                  \\\\quad \\\\text{euros}
+                  \\\\quad \\\\text{thousand euros}
                   $$
-                  Alice’s surplus (blue area in the left graph) is
-                  $ ${calcs.CSAD}$. 
-                  Bruno’s surplus (blue area in the middle graph) is
-                  $ ${calcs.CSBD}$. 
+                  Group A’s surplus (blue area in the left graph) is
+                  $ ${calcs.CSAD}$ thousand euros. 
+                  Group B’s surplus (blue area in the middle graph) is
+                  $ ${calcs.CSBD}$ thousand euros. 
                   `"
             show: params.disc == 1

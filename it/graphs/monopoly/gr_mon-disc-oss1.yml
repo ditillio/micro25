@@ -43,7 +43,7 @@ layout:
       xAxis:
         max: 9
         ticks: 0
-        title: Alice
+        title: Gruppo A
       yAxis:
         max: 10.5
         ticks: 0
@@ -52,15 +52,15 @@ layout:
       objects:
 
       - Label:
-              coordinates: [9, 0]
+              coordinates: [7, 0]
               text: "` \\\\text{    biglietti} `"
-              # yPixelOffset: 9
-              # position: l
-      # - Label:
-      #         coordinates: [7.5, 0]
-      #         text: "` \\\\text{(migliaia)} `"
-      #         yPixelOffset: -9
-      #         position: l
+              yPixelOffset: 9
+              position: l
+      - Label:
+              coordinates: [7, 0]
+              text: "` \\\\text{(migliaia)} `"
+              yPixelOffset: -9
+              position: l
       - Label:
               coordinates: [0, 10.5]
               text: "` \\\\text{euro/biglietto}  `"
@@ -75,7 +75,6 @@ layout:
 # ticks
       - Point: {coordinates: [6, 0], color: lightgrey, r: 0, droplines: {vertical: 6}}
       - Point: {coordinates: [7, 0], color: lightgrey, r: 0, droplines: {vertical: 7}}
-      - Point: {coordinates: [8, 0], color: lightgrey, r: 0, droplines: {vertical: 8}}
 
 # Alice surplus with or without discrimination
       - Rectangle: {x1: 0, y1: calcs.PA, x2: 1, y2: 9, fill: blue, show: calcs.PA <= 8}
@@ -175,7 +174,7 @@ layout:
       xAxis:
         max: 9
         ticks: 0
-        title: Bruno
+        title: Gruppo B
       yAxis:
         max: 10.5
         ticks: 0
@@ -184,15 +183,15 @@ layout:
       objects:
 
       - Label:
-              coordinates: [9, 0]
+              coordinates: [7, 0]
               text: "` \\\\text{    biglietti} `"
-              # yPixelOffset: 9
-              # position: l
-      # - Label:
-      #         coordinates: [7.5, 0]
-      #         text: "` \\\\text{(migliaia)} `"
-      #         yPixelOffset: -9
-      #         position: l
+              yPixelOffset: 9
+              position: l
+      - Label:
+              coordinates: [7, 0]
+              text: "` \\\\text{(migliaia)} `"
+              yPixelOffset: -9
+              position: l
       - Label:
               coordinates: [0, 10.5]
               text: "` \\\\text{euro/biglietto}  `"
@@ -208,7 +207,6 @@ layout:
       - Point: {coordinates: [5, 0], color: lightgrey, r: 0, droplines: {vertical: 5}}
       - Point: {coordinates: [6, 0], color: lightgrey, r: 0, droplines: {vertical: 6}}
       - Point: {coordinates: [7, 0], color: lightgrey, r: 0, droplines: {vertical: 7}}
-      - Point: {coordinates: [8, 0], color: lightgrey, r: 0, droplines: {vertical: 8}}
 
 # price line with no discrimination
       - Line:
@@ -305,15 +303,15 @@ layout:
       objects:
 
       - Label:
-              coordinates: [9, 0]
-              text: "` \\\\text{    biglietti} `"
-              # yPixelOffset: 9
+              coordinates: [8, 0]
+              text: "` \\\\text{     biglietti} `"
+              yPixelOffset: 9
               position: l
-      # - Label:
-      #         coordinates: [7.5, 0]
-      #         text: "` \\\\text{(migliaia)} `"
-      #         yPixelOffset: -9
-      #         position: l
+      - Label:
+              coordinates: [8, 0]
+              text: "` \\\\text{  (migliaia)} `"
+              yPixelOffset: -9
+              position: l
       - Label:
               coordinates: [0, 10.5]
               text: "` \\\\text{euro/biglietto}  `"
@@ -487,30 +485,30 @@ layout:
                   `"
           - html: "`
                   Ad un prezzo lineare di $P=${params.P}$ euro a biglietto,
-                  Alice acquista $ ${calcs.QA}$ biglietti, mentre
-                  Bruno ne acquista $ ${calcs.QB}$. Il profitto del monopolista
+                  il gruppo A acquista $ ${calcs.QA}$ migliaia di biglietti, mentre
+                  il gruppo B ne acquista $ ${calcs.QB}$ migliaia. Il profitto del monopolista
                   (area verde nel grafico di destra, pari alla somma delle aree verdi nei
                   due grafici a sinistra e al centro) è quindi pari a
                   $$
                   (${params.P}-1.50)\\\\times ${calcs.Q}
                   =
                   ${calcs.profit0}
-                  \\\\quad \\\\text{euro}
+                  \\\\quad \\\\text{migliaia di euro}
                   $$
-                  Il surplus di Alice (area azzurra nel grafico di sinistra) è
-                  pari a $ ${calcs.CSA}$. 
-                  Il surplus di Bruno (area azzurra nel grafico di mezzo) è
-                  pari a $ ${calcs.CSB}$. 
+                  Il surplus del gruppo A  (area azzurra nel grafico di sinistra) è
+                  pari a $ ${calcs.CSA}$ migliaia di euro. 
+                  Il surplus del gruppo B  (area azzurra nel grafico di mezzo) è
+                  pari a $ ${calcs.CSB}$ migliaia di euro. 
                   Il surplus del consumatore (area azzurra nel grafico di destra, pari alla
                   somma delle aree azzurre nei
-                  due grafici a sinistra e al centro) è pari a ${calcs.CS}.
+                  due grafici a sinistra e al centro) è pari a ${calcs.CS} migliaia di euro.
                   `"
             show: params.disc == 0
 
           - html: "`
                   Ai prezzi lineari $P_A=${calcs.PA}$ e $P_B=${calcs.PB}$ 
-                  Alice e Bruno acquistano rispettivamente $ ${calcs.QA}$
-                  e $ ${calcs.QB}$ biglietti. Il profitto del monopolista
+                  i gruppi A e B  acquistano rispettivamente $ ${calcs.QA}$
+                  e $ ${calcs.QB}$ migliaia di biglietti. Il profitto del monopolista
                   (somma delle aree verdi nei
                   grafici a sinistra e al centro) è quindi pari a
                   $$
@@ -518,12 +516,12 @@ layout:
                   +(${calcs.PB}-1.50)\\\\times ${calcs.QB}
                   =
                   ${calcs.profit3}
-                  \\\\quad \\\\text{euro}
+                  \\\\quad \\\\text{migliaia di euro}
                   $$
-                  Il surplus di Alice (area azzurra nel grafico di sinistra) è
-                  pari a $ ${calcs.CSAD}$. 
-                  Il surplus di Bruno (area azzurra nel grafico di mezzo) è
-                  pari a $ ${calcs.CSBD}$. 
+                  Il surplus del gruppo A (area azzurra nel grafico di sinistra) è
+                  pari a $ ${calcs.CSAD}$ migliaia di euro. 
+                  Il surplus del gruppo B (area azzurra nel grafico di mezzo) è
+                  pari a $ ${calcs.CSBD}$ migliaia di euro. 
                   `"
             show: params.disc == 1
 
