@@ -53,7 +53,7 @@ layout:
 
       - Label:
               coordinates: [7, 0]
-              text: "` \\\\text{    biglietti} `"
+              text: "` \\\\text{    licenze} `"
               yPixelOffset: 9
               position: l
       - Label:
@@ -63,7 +63,7 @@ layout:
               position: l
       - Label:
               coordinates: [0, 10.5]
-              text: "` \\\\text{euro/biglietto}  `"
+              text: "` \\\\text{euro/licenza}  `"
 
 # Alice demand
       - Point: {coordinates: [1, 9], droplines: {vertical: 1, horizontal: 9}, color: Blue, r: 3, strokeWidth: 0.5}
@@ -184,7 +184,7 @@ layout:
 
       - Label:
               coordinates: [7, 0]
-              text: "` \\\\text{    biglietti} `"
+              text: "` \\\\text{    licenze} `"
               yPixelOffset: 9
               position: l
       - Label:
@@ -194,7 +194,7 @@ layout:
               position: l
       - Label:
               coordinates: [0, 10.5]
-              text: "` \\\\text{euro/biglietto}  `"
+              text: "` \\\\text{euro/licenza}  `"
 
 
 # Bruno demand
@@ -304,7 +304,7 @@ layout:
 
       - Label:
               coordinates: [8, 0]
-              text: "` \\\\text{     biglietti} `"
+              text: "` \\\\text{     licenze} `"
               yPixelOffset: 9
               position: l
       - Label:
@@ -314,7 +314,7 @@ layout:
               position: l
       - Label:
               coordinates: [0, 10.5]
-              text: "` \\\\text{euro/biglietto}  `"
+              text: "` \\\\text{euro/licenza}  `"
 
 # market demand
       - Point: {coordinates: [1, 9], droplines: {vertical: 1, horizontal: 9}, color: Blue, r: 3, strokeWidth: 0.5}
@@ -444,7 +444,7 @@ layout:
       - html: "`  `"
       checkboxes:
       - param: disc
-        label: "\\text{Discriminazione basata su età}"
+        label: "\\text{Discrimina gruppi}"
 
 
     middleControls:
@@ -458,8 +458,8 @@ layout:
       show: params.disc == 0
 
     rightControls:
-      title: Discriminazione basata su età
-      description: Selezionare un prezzo lineare da applicare ai giovani e uno da applicare agli adulti.
+      title: Discriminazione professionisti / studenti
+      description: Selezionare un prezzo lineare da applicare ai professionisti e uno da applicare agli studenti.
       divs:
       - html: "`  `"
       sliders:
@@ -481,11 +481,11 @@ layout:
     explanation:
         divs:
           - html: "`
-                  Il costo marginale del monopolista è pari a $1.50$ euro a biglietto.
+                  Il costo marginale del monopolista è pari a $1.50$ euro a licenza.
                   `"
           - html: "`
-                  Ad un prezzo lineare di $P=${params.P}$ euro a biglietto,
-                  il gruppo A acquista $ ${calcs.QA}$ migliaia di biglietti, mentre
+                  Ad un prezzo lineare di $P=${params.P}$ euro a licenza,
+                  il gruppo A acquista $ ${calcs.QA}$ migliaia di licenze, mentre
                   il gruppo B ne acquista $ ${calcs.QB}$ migliaia. Il profitto del monopolista
                   (area verde nel grafico di destra, pari alla somma delle aree verdi nei
                   due grafici a sinistra e al centro) è quindi pari a
@@ -508,7 +508,7 @@ layout:
           - html: "`
                   Ai prezzi lineari $P_A=${calcs.PA}$ e $P_B=${calcs.PB}$ 
                   i gruppi A e B  acquistano rispettivamente $ ${calcs.QA}$
-                  e $ ${calcs.QB}$ migliaia di biglietti. Il profitto del monopolista
+                  e $ ${calcs.QB}$ migliaia di licenze. Il profitto del monopolista
                   (somma delle aree verdi nei
                   grafici a sinistra e al centro) è quindi pari a
                   $$

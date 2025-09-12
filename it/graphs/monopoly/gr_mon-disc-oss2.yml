@@ -5,85 +5,87 @@ params:
 
 - {name: disc, value: 0}
 - {name: mc, value: 2}
-- {name: P, value: 6, min: 2, max: 18}
-- {name: PA, value: 4, min: 2, max: 18}
-- {name: PB, value: 4, min: 2, max: 18}
+
+- {name: Q, value: 12, min: 2, max: 25}
+- {name: QA, value: 4, min: 2, max: 18}
+- {name: QB, value: 4, min: 2, max: 10}
 
 
 calcs:
 
-  PA: " (params.disc == 0) ? (params.P) : (params.PA) "
-  PB: " (params.disc == 0) ? (params.P) : (params.PB) "
-  QA: max((0),(4.5)-(calcs.PA)/(4))
-  QB: max((0),(2.5)-(calcs.PB)/(4))
-  Q: (calcs.QA)+(calcs.QB)
-  profit: (500)*(calcs.QA)*((calcs.PA)-(params.mc))+(500)*(calcs.QB)*((calcs.PB)-(params.mc)) # profit
+  P: max( (20)-(params.Q) , (16)-(params.Q)/(2) ) # price with no discrimination
+
+  PA: " (params.disc == 0) ? (calcs.P) : ( (20)-(params.QA) ) "
+  PB: " (params.disc == 0) ? (calcs.P) : ( (12)-(params.QB) ) "
+
+  QA: " (params.disc == 1) ? (params.QA) : ( max((0),(20)-(calcs.PA)) ) "
+  QB: " (params.disc == 1) ? (params.QB) : ( max((0),(12)-(calcs.PB)) ) "
 
 
 
 aspectRatio: 1.8
 
 layout:
-  TwoHorizontalGraphsPlusSidebar:
+  ThreeHorizontalGraphs:
 
     leftGraph:
       xAxis:
         orient: bottom
         min: 0
-        max: 6
+        max: 34
         ticks: 0
       yAxis:
         orient: left
-        min: -(5)
-        max: 20
+        min: -(4)
+        max: 22
         ticks: 0
-
       objects:
       - Label:
-              coordinates: [5.5, 0]
-              text: "` \\\\text{GB} `"
+              coordinates: [34, 0]
+              text: "` \\\\text{kWh} `"
               yPixelOffset: 9
-              position: l
+              position: c
       - Label:
-              coordinates: [5, 0]
-              text: "` \\\\text{(centinaia)} `"
+              coordinates: [34, 0]
+              text: "` \\\\text{(milioni)} `"
               yPixelOffset: -9
-              position: l
+              position: c
       - Label:
-            coordinates: [0, 20]
-            text: "` \\\\text{euro/100GB}  `"
+            coordinates: [0, 22]
+            text: "` \\\\text{cent/kWh}  `"
 
-# market demand function
+# group B demand function
       - Line:
-          yIntercept: (18)
-          slope: -(4)
+          yIntercept: (20)
+          slope: -(1)
           color: Blue
-          max: (4.5)
+          max: (20)
           strokeWidth: 1.5
           position: b
       - Point:
-          coordinates: [0, 18]
+          coordinates: [0, 20]
           droplines:
-            horizontal: 18
+            horizontal: 20
           color: Blue
           r: 0
       - Point:
-          coordinates: [4.5, 0]
+          coordinates: [20, 0]
           color: Blue
           droplines:
-            vertical: 4.5
+            vertical: 20
           r: 0
 
 # marginal revenue
       - Line:
-          yIntercept: (18)
-          slope: -(8)
+          yIntercept: (20)
+          slope: -(2)
+          max: (32)
           color: Green
           strokeWidth: 1.5
-          position: l
           label:
-            text: "` MR_A = 18 - 8Q `"
+            text: "` MR_A `"
             y: -(4)
+          show: params.disc == 1
 
 
 # marginal cost
@@ -91,11 +93,11 @@ layout:
           yIntercept: (2)
           color: Red
           strokeWidth: 1.5
-          max: 5
+          max: 28
           position: b
           label:
             text: "` MC  `"
-            x: (5)
+            x: 28
       - Point:
           coordinates: [0, 2]
           droplines:
@@ -103,15 +105,17 @@ layout:
           color: Red
           r: 0
 
+
 # chosen point
       - Point:
           coordinates: [calcs.QA, calcs.PA]
           color: Blue
           r: 3
           droplines:
-            vertical: calcs.QA.toFixed(2)
-            horizontal: calcs.PA.toFixed(2)
-          strokeWidth: 0.5
+            vertical: calcs.QA.toFixed(0)
+            horizontal: calcs.PA.toFixed(1)
+          strokeWidth: 0.2
+
 
 # monopolist profit/loss
       - Rectangle:
@@ -120,15 +124,155 @@ layout:
           x2: calcs.QA
           y2: calcs.PA
           fill: green
+          opacity: 0.1
 
 # evaluation
       - Label:
-          coordinates: [4,15]
+          coordinates: [22,15]
           text: "` \\\\LARGE\\\\text{BINGO!} `" 
           position: c
           bgcolor: none
           color: green
-          show: ( calcs.QA == 2.5 && params.disc == 0 ) || ( calcs.QA == 2 && params.disc == 1 )
+          show: params.QA == 9 && params.disc == 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    middleGraph:
+      xAxis:
+        orient: bottom
+        min: 0
+        max: 34
+        ticks: 0
+      yAxis:
+        orient: left
+        min: -(4)
+        max: 22
+        ticks: 0
+      objects:
+      - Label:
+              coordinates: [34, 0]
+              text: "` \\\\text{kWh} `"
+              yPixelOffset: 9
+              position: c
+      - Label:
+              coordinates: [34, 0]
+              text: "` \\\\text{(milioni)} `"
+              yPixelOffset: -9
+              position: c
+      - Label:
+            coordinates: [0, 22]
+            text: "` \\\\text{cent/kWh}  `"
+
+
+# group B demand function
+      - Line:
+          yIntercept: (12)
+          slope: -(1)
+          color: Blue
+          max: (12)
+          strokeWidth: 1.5
+          position: b
+      - Point:
+          coordinates: [0, 12]
+          droplines:
+            horizontal: 12
+          color: Blue
+          r: 0
+      - Point:
+          coordinates: [12, 0]
+          color: Blue
+          droplines:
+            vertical: 12
+          r: 0
+
+# marginal revenue
+      - Line:
+          yIntercept: (12)
+          slope: -(2)
+          max: (32)
+          color: Green
+          strokeWidth: 1.5
+          label:
+            text: "` MR_B `"
+            y: -(4)
+          show: params.disc == 1
+
+
+# marginal cost
+      - Line:
+          yIntercept: (2)
+          color: Red
+          strokeWidth: 1.5
+          max: 28
+          position: b
+          label:
+            text: "` MC  `"
+            x: 28
+      - Point:
+          coordinates: [0, 2]
+          droplines:
+            horizontal: 2
+          color: Red
+          r: 0
+
+
+# chosen point
+      - Point:
+          coordinates: [calcs.QB, calcs.PB]
+          color: Blue
+          r: 3
+          droplines:
+            vertical: calcs.QB.toFixed(0)
+            horizontal: calcs.PB.toFixed(1)
+          strokeWidth: 0.2
+          show: calcs.QB > 0
+
+
+# monopolist profit/loss
+      - Rectangle:
+          x1: 0
+          y1: 2
+          x2: calcs.QB
+          y2: calcs.PB
+          fill: green
+          opacity: 0.1
+
+# evaluation
+      - Label:
+          coordinates: [22,15]
+          text: "` \\\\LARGE\\\\text{BINGO!} `" 
+          position: c
+          bgcolor: none
+          color: green
+          show: params.QB == 5 && params.disc == 1
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -140,59 +284,75 @@ layout:
       xAxis:
         orient: bottom
         min: 0
-        max: 4.5
+        max: 34
         ticks: 0
       yAxis:
         orient: left
-        min: -(5)
-        max: 20
+        min: -(4)
+        max: 22
         ticks: 0
       objects:
       - Label:
-              coordinates: [4, 0]
-              text: "` \\\\text{GB} `"
+              coordinates: [34, 0]
+              text: "` \\\\text{kWh} `"
               yPixelOffset: 9
               position: l
       - Label:
-              coordinates: [3.5, 0]
-              text: "` \\\\text{(centinaia)} `"
+              coordinates: [34, 0]
+              text: "` \\\\text{(milioni)} `"
               yPixelOffset: -9
               position: l
       - Label:
-            coordinates: [0, 20]
-            text: "` \\\\text{euro/100GB}  `"
+            coordinates: [0, 22]
+            text: "` \\\\text{cent/kWh}  `"
 
 
 # market demand function
       - Line:
-          yIntercept: (10)
-          slope: -(4)
+          yIntercept: (20)
+          slope: -(1)
           color: Blue
-          max: (2.5)
+          max: (8)
+          strokeWidth: 1.5
+          position: b
+      - Line:
+          yIntercept: (16)
+          slope: -(1)/(2)
+          color: Blue
+          min: (8)
+          max: (32)
           strokeWidth: 1.5
           position: b
       - Point:
-          coordinates: [0, 10]
+          coordinates: [0, 20]
           droplines:
-            horizontal: 10
+            horizontal: 20
           color: Blue
           r: 0
       - Point:
-          coordinates: [2.5, 0]
+          coordinates: [32, 0]
           color: Blue
           droplines:
-            vertical: 2.5
+            vertical: 32
           r: 0
 
 # marginal revenue
       - Line:
-          yIntercept: (10)
-          slope: -(8)
+          yIntercept: (20)
+          slope: -(2)
+          max: (8)
           color: Green
           strokeWidth: 1.5
           position: l
+      - Line:
+          yIntercept: (16)
+          slope: -(1)
+          min: (8)
+          max: (32)
+          color: Green
+          strokeWidth: 1.5
           label:
-            text: "` MR_B = 10 - 8Q `"
+            text: "` MR `"
             y: -(4)
 
 
@@ -201,11 +361,11 @@ layout:
           yIntercept: (2)
           color: Red
           strokeWidth: 1.5
-          max: 3.5
+          max: 33
           position: b
           label:
             text: "` MC  `"
-            x: (3.5)
+            x: (33)
       - Point:
           coordinates: [0, 2]
           droplines:
@@ -213,111 +373,131 @@ layout:
           color: Red
           r: 0
 
-
-
-# chosen point
+# discontinuity point
       - Point:
-          coordinates: [calcs.QB, calcs.PB]
+          coordinates: [8, 12]
+          color: Black
+          r: 0
+          droplines:
+            vertical: 8
+            horizontal: 12
+          strokeWidth: 0.2
+
+
+# chosen point with no discrimination
+      - Point:
+          coordinates: [params.Q, calcs.P]
           color: Blue
           r: 3
           droplines:
-            vertical: calcs.QB.toFixed(2)
-            horizontal: calcs.PB.toFixed(2)
-          strokeWidth: 0.5
+            vertical: params.Q.toFixed(0)
+            horizontal: calcs.P.toFixed(1)
+          strokeWidth: 0.2
+          show: params.disc == 0
 
 
 # monopolist profit/loss
       - Rectangle:
           x1: 0
           y1: 2
-          x2: calcs.QB
-          y2: calcs.PB
+          x2: params.Q
+          y2: calcs.P
           fill: green
-
+          opacity: 0.1
+          show: params.disc == 0
 
 # evaluation
       - Label:
-          coordinates: [3,15]
+          coordinates: [25,15]
           text: "` \\\\LARGE\\\\text{BINGO!} `" 
           position: c
           bgcolor: none
           color: green
-          show: ( calcs.QB == 0.5 && params.disc == 0 ) || ( calcs.QB == 1 && params.disc == 1 )
+          show: params.Q == 14 && params.disc == 0
+
+
+# reminder max profit with no discrimination
+      - Rectangle: {x1: 0, y1: params.mc, x2: 14, y2: 9, fill: green, opacity: 0.1, show: params.disc == 1}
+
+# reminder optimal choice with no discrimination
+      - Point:
+          coordinates: [14,9]
+          color: Darkgreen
+          r: 3
+          droplines:
+            vertical: 14
+            horizontal: 9
+          strokeWidth: 0.2
+          show: params.disc == 1
+
+      - Arrow:
+          begin: [28,13]
+          end: [11,7]
+          color: Darkgreen
+          strokeWidth: 1
+          bgcolor: none
+          show: params.disc == 1
+      - Label:
+          text: " \\text{massimo profitto senza} "
+          coordinates: [28,13]
+          yPixelOffset: 9
+          show: params.disc == 1
+      - Label:
+          text: " \\text{discriminazione} = 98 "
+          coordinates: [28,13]
+          yPixelOffset: -9
+          show: params.disc == 1
 
 
 
 
 
-    sidebar:
-      controls:
-
-      - title: FIGURA 5.9
-
-        # description: Scegliere il tipo di compensazione per visualizzare 
-        #               vincolo di bilancio e scelta ottima corrispondenti ai nuovi prezzi e al 
-        #               reddito compensato.
-
-        # divs:
-        #   - html: "` profit = ${calcs.profit} `"
-
-        radioGroup:
-          param: disc
-          options:
-            - Scegli prezzo uniforme
-            - Scegli prezzi distinti per gruppo
 
 
-      - title: Prezzo uniforme
-        description: Trova il prezzo (uguale per entrambi i gruppi) che massimizza il profitto del monopolista. 
-        sliders:
-        - param: P
-          label: "` P `"
-        divs:
-          - html: "` A questo prezzo ($P=${params.P}$) il profitto è pari a ${calcs.profit}.
-                      È possibile ottenere un profitto maggiore scegliendo un prezzo uniforme diverso.
-                       `"
-            show: params.P !== 8
-          - html: "` A questo prezzo ($P=${params.P}$) il profitto è pari a ${calcs.profit}.
-                      Non è possibile ottenere un profitto maggiore scegliendo un prezzo uniforme diverso.
-                      È però possibile ottenere un profitto maggiore scegliendo prezzi distinti per i due gruppi!
-                       `"
-            show: params.P == 8
-        show: params.disc == 0
 
 
-      - title: Prezzi distinti per gruppo
-        description: Trova i prezzi (che possono essere diversi per i due gruppi) che massimizzano il profitto del monopolista.
-        sliders:
-        - param: PA
-          label: "` P_A `"
-        - param: PB
-          label: "` P_B `"
-        divs:
-          - html: "` A questi prezzi ($P_A=${params.PA}$ e $P_B=${params.PB}$) il profitto 
-                      è pari a ${calcs.profit}.
-                      È possibile ottenere un profitto maggiore scegliendo prezzi diversi.
-                       `"
-            show: params.PA !== 10 && params.PB !== 6
-          - html: "` A questi prezzi ($P_A=${params.PA}$ e $P_B=${params.PB}$) il profitto 
-                      è pari a ${calcs.profit}.
-                      Non è possibile ottenere un profitto maggiore scegliendo un prezzo diverso
-                      per il gruppo A. È però possibile ottenere un profitto maggiore scegliendo
-                      un prezzo diverso per il gruppo B!
-                       `"
-            show: params.PA == 10 && params.PB !== 6
-          - html: "` A questi prezzi ($P_A=${params.PA}$ e $P_B=${params.PB}$) il profitto 
-                      è pari a ${calcs.profit}.
-                      Non è possibile ottenere un profitto maggiore scegliendo un prezzo diverso
-                      per il gruppo B. È però possibile ottenere un profitto maggiore scegliendo
-                      un prezzo diverso per il gruppo A!
-                       `"
-            show: params.PA !== 10 && params.PB == 6
-          - html: "` A questi prezzi ($P_A=${params.PA}$ e $P_B=${params.PB}$) il profitto 
-                      è pari a ${calcs.profit}.
-                      Non è possibile ottenere un profitto maggiore!
-                       `"
-            show: params.PA == 10 && params.PB == 6
-        show: params.disc == 1
+
+
+
+
+
+
+
+    leftControls:
+      title: " Tipo di discriminazione: "
+      divs:
+      - html: "`  `"
+      checkboxes:
+      - param: disc
+        label: "\\text{Discriminazione basata su età}"
+
+
+    middleControls:
+      title: No discriminazione
+      description: Selezionare una quantità da vendere ad un prezzo lineare uguale per tutti.
+      divs:
+      - html: "`  `"
+      sliders:
+      - param: Q
+        label: Q
+      show: params.disc == 0
+
+    rightControls:
+      title: Discriminazione basata su età
+      description: Selezionare un prezzo lineare da applicare ai giovani e uno da applicare agli adulti.
+      divs:
+      - html: "`  `"
+      sliders:
+      - param: QA
+        label: Q_A
+      - param: QB
+        label: Q_B
+      show: params.disc == 1
+
+
+
+
+
 
 
 
@@ -329,23 +509,3 @@ layout:
     explanation:
       divs:
         - html: "` La funzione di domanda è rappresentata dai punti blu. `"
-        - html: "` La funzione di ricavo marginale è rappresentata dai punti verdi. `"
-        - html: "` Al prezzo $P=${params.P}$ ciascuno dei 500 consumatori del gruppo A
-                  domanda ${calcs.QA} unità e ciascuno dei 500 consumatori del gruppo B 
-                  domanda ${calcs.QB} unità. Il profitto è quindi pari a 
-                    $$
-                    500\\\\times (${params.P}-${params.mc})\\\\times ${calcs.QA}
-                    +
-                    500\\\\times (${params.P}-${params.mc})\\\\times ${calcs.QB}=${calcs.profit}
-                    $$ `"
-          show: params.disc == 0
-        - html: "` Ai prezzi $P_A=${params.PA}$ e $P_B=${params.PB}$ ciascuno dei 500
-                  consumatori del gruppo A
-                  domanda ${calcs.QA} unità e ciascuno dei 500 consumatori del gruppo B 
-                  domanda ${calcs.QB} unità. Il profitto è quindi pari a 
-                    $$
-                    500\\\\times (${params.P}-${params.mc})\\\\times ${calcs.QA}
-                    +
-                    500\\\\times (${params.P}-${params.mc})\\\\times ${calcs.QB}=${calcs.profit}
-                    $$ `"
-          show: params.disc == 1

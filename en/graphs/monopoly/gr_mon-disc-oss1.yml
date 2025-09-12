@@ -42,26 +42,27 @@ layout:
       xAxis:
         max: 9
         ticks: 0
-        title: Group A
+        title: Gruppo A
       yAxis:
         max: 10.5
         ticks: 0
+
 
       objects:
 
       - Label:
               coordinates: [7, 0]
-              text: "` \\\\text{    tickets} `"
+              text: "` \\\\text{    licenses} `"
               yPixelOffset: 9
               position: l
       - Label:
-              coordinates: [6.6, 0]
+              coordinates: [7, 0]
               text: "` \\\\text{(thousands)} `"
               yPixelOffset: -9
               position: l
       - Label:
               coordinates: [0, 10.5]
-              text: "` \\\\text{euros/ticket}  `"
+              text: "` \\\\text{euro/license}  `"
 
 # Alice demand
       - Point: {coordinates: [1, 9], droplines: {vertical: 1, horizontal: 9}, color: Blue, r: 3, strokeWidth: 0.5}
@@ -72,6 +73,7 @@ layout:
 
 # ticks
       - Point: {coordinates: [6, 0], color: lightgrey, r: 0, droplines: {vertical: 6}}
+      - Point: {coordinates: [7, 0], color: lightgrey, r: 0, droplines: {vertical: 7}}
 
 # Alice surplus with or without discrimination
       - Rectangle: {x1: 0, y1: calcs.PA, x2: 1, y2: 9, fill: blue, show: calcs.PA <= 8}
@@ -122,6 +124,8 @@ layout:
           y2: params.mc
           fill: red
 
+
+
 # profit with or without discrimination
       - Rectangle: {x1: 0, y1: params.mc, x2: calcs.QA, y2: calcs.PA, fill: green}
 
@@ -149,30 +153,48 @@ layout:
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     middleGraph:
       xAxis:
         max: 9
         ticks: 0
-        title: Group B
+        title: Gruppo B
       yAxis:
         max: 10.5
         ticks: 0
+
 
       objects:
 
       - Label:
               coordinates: [7, 0]
-              text: "` \\\\text{    tickets} `"
+              text: "` \\\\text{    licenses} `"
               yPixelOffset: 9
               position: l
       - Label:
-              coordinates: [6.6, 0]
+              coordinates: [7, 0]
               text: "` \\\\text{(thousands)} `"
               yPixelOffset: -9
               position: l
       - Label:
               coordinates: [0, 10.5]
-              text: "` \\\\text{euros/ticket}  `"
+              text: "` \\\\text{euro/license}  `"
+
 
 # Bruno demand
       - Point: {coordinates: [1, 6], droplines: {vertical: 1, horizontal: 6}, color: Blue, r: 3, strokeWidth: 0.5}
@@ -183,6 +205,7 @@ layout:
       - Point: {coordinates: [4, 0], color: lightgrey, r: 0, droplines: {vertical: 4}}
       - Point: {coordinates: [5, 0], color: lightgrey, r: 0, droplines: {vertical: 5}}
       - Point: {coordinates: [6, 0], color: lightgrey, r: 0, droplines: {vertical: 6}}
+      - Point: {coordinates: [7, 0], color: lightgrey, r: 0, droplines: {vertical: 7}}
 
 # price line with no discrimination
       - Line:
@@ -212,6 +235,7 @@ layout:
       - Rectangle: {x1: 0, y1: calcs.PB, x2: 1, y2: 6, fill: blue, show: calcs.PB <= 5}
       - Rectangle: {x1: 1, y1: calcs.PB, x2: 2, y2: 4, fill: blue, show: calcs.PB <= 3}
 
+
 # marginal cost
       - Line:
           yIntercept: params.mc
@@ -231,6 +255,10 @@ layout:
           y2: params.mc
           fill: red
 
+
+
+
+
 # profit with or without discrimination
       - Rectangle: {x1: 0, y1: params.mc, x2: calcs.QB, y2: calcs.PB, fill: green}
 
@@ -243,30 +271,49 @@ layout:
           color: green
           show: (params.disc == 1 && calcs.PB == 4)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     rightGraph:
       xAxis:
         max: 9
         ticks: 0
-        title: Market
+        title: Mercato
       yAxis:
         max: 10.5
         ticks: 0
 
+
       objects:
 
       - Label:
-              coordinates: [8.5, 0]
-              text: "` \\\\text{    tickets} `"
+              coordinates: [8, 0]
+              text: "` \\\\text{     licenses} `"
               yPixelOffset: 9
               position: l
       - Label:
-              coordinates: [8.3, 0]
-              text: "` \\\\text{(thousands)} `"
+              coordinates: [8, 0]
+              text: "` \\\\text{  (thousands)} `"
               yPixelOffset: -9
               position: l
       - Label:
               coordinates: [0, 10.5]
-              text: "` \\\\text{euros/ticket}  `"
+              text: "` \\\\text{euro/license}  `"
 
 # market demand
       - Point: {coordinates: [1, 9], droplines: {vertical: 1, horizontal: 9}, color: Blue, r: 3, strokeWidth: 0.5}
@@ -278,6 +325,7 @@ layout:
       - Point: {coordinates: [7, 2], droplines: {vertical: 7, horizontal: 2}, color: Blue, r: 3, strokeWidth: 0.5}
       - Point: {coordinates: [8, 1], droplines: {vertical: 8, horizontal: 1}, color: Blue, r: 3, strokeWidth: 0.5}
 
+
 # consumer surplus with no discrimination
       - Rectangle: {x1: 0, y1: params.P, x2: 1, y2: 9, fill: blue, show: params.P <= 8 && params.disc ==0}
       - Rectangle: {x1: 1, y1: params.P, x2: 2, y2: 7, fill: blue, show: params.P <= 6 && params.disc ==0}
@@ -285,6 +333,7 @@ layout:
       - Rectangle: {x1: 3, y1: params.P, x2: 4, y2: 5, fill: blue, show: params.P <= 4 && params.disc ==0}
       - Rectangle: {x1: 4, y1: params.P, x2: 5, y2: 4, fill: blue, show: params.P <= 3 && params.disc ==0}
       - Rectangle: {x1: 5, y1: params.P, x2: 6, y2: 3, fill: blue, show: params.P <= 2 && params.disc ==0}
+
 
 # ticks
       - Point: {coordinates: [4, 0], color: lightgrey, opacity: 2, r: 0, droplines: {vertical: 4}}
@@ -350,6 +399,8 @@ layout:
 # reminder max profit with no discrimination
       - Rectangle: {x1: 0, y1: params.mc, x2: 4, y2: 5, fill: green, show: params.disc == 1}
 
+
+
 # evaluation
       - Label:
           coordinates: [7,7]
@@ -358,6 +409,7 @@ layout:
           bgcolor: none
           color: green
           show: (params.disc == 0 && params.P == 5) || (params.disc == 1 && params.QD == 7 )
+
 
       - Arrow:
           begin: [6,8]
@@ -377,13 +429,22 @@ layout:
           yPixelOffset: -9
           show: params.disc == 1
 
+
+
+
+
+
+
+
+
     leftControls:
-      title: " Type of discrimination: "
+      title: " Type of discrinination: "
       divs:
       - html: "`  `"
       checkboxes:
       - param: disc
-        label: "\\text{Age-based discrimination}"
+        label: "\\text{Discriminate groups}"
+
 
     middleControls:
       title: No discrimination
@@ -396,8 +457,8 @@ layout:
       show: params.disc == 0
 
     rightControls:
-      title: Age-based discrimination
-      description: Select a linear price for young customers and one for adults.
+      title: Discriminate professionals / students
+      description: Select a linear price for professionals and  one for students.
       divs:
       - html: "`  `"
       sliders:
@@ -407,14 +468,22 @@ layout:
         label: P_B
       show: params.disc == 1
 
+
+
+
+
+
+
+
+
     explanation:
         divs:
           - html: "`
-                  The monopolist’s marginal cost is $1.50$ euros per ticket.
+                  The monopolist’s marginal cost is $1.50$ euros per license.
                   `"
           - html: "`
-                  At a linear price of $P=${params.P}$ euros per ticket,
-                  group A buys $ ${calcs.QA}$ thousand tickets, while
+                  At a linear price of $P=${params.P}$ euros per license,
+                  group A buys $ ${calcs.QA}$ thousand licenses, while
                   group B buys $ ${calcs.QB}$ thousand. The monopolist’s profit
                   (green area in the right graph, equal to the sum of the green areas in
                   the left and middle graphs) is therefore
@@ -437,7 +506,7 @@ layout:
           - html: "`
                   At linear prices $P_A=${calcs.PA}$ and $P_B=${calcs.PB}$ 
                   groups A and B  buy $ ${calcs.QA}$
-                  and $ ${calcs.QB}$ thousand tickets, respectively. The monopolist’s profit
+                  and $ ${calcs.QB}$ thousand licenses, respectively. The monopolist’s profit
                   (sum of the green areas in
                   the left and middle graphs) is therefore
                   $$
