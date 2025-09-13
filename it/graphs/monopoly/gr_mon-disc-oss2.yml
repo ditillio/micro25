@@ -42,7 +42,7 @@ layout:
       objects:
       - Label:
               coordinates: [34, 0]
-              text: "` \\\\text{kWh} `"
+              text: "` \\\\text{100km} `"
               yPixelOffset: 9
               position: c
       - Label:
@@ -52,7 +52,7 @@ layout:
               position: c
       - Label:
             coordinates: [0, 22]
-            text: "` \\\\text{cent/kWh}  `"
+            text: "` \\\\text{euro/100km}  `"
 
 # group B demand function
       - Line:
@@ -166,7 +166,7 @@ layout:
       objects:
       - Label:
               coordinates: [34, 0]
-              text: "` \\\\text{kWh} `"
+              text: "` \\\\text{100km} `"
               yPixelOffset: 9
               position: c
       - Label:
@@ -176,7 +176,7 @@ layout:
               position: c
       - Label:
             coordinates: [0, 22]
-            text: "` \\\\text{cent/kWh}  `"
+            text: "` \\\\text{euro/100km}  `"
 
 
 # group B demand function
@@ -294,7 +294,7 @@ layout:
       objects:
       - Label:
               coordinates: [34, 0]
-              text: "` \\\\text{kWh} `"
+              text: "` \\\\text{100km} `"
               yPixelOffset: 9
               position: l
       - Label:
@@ -304,7 +304,7 @@ layout:
               position: l
       - Label:
             coordinates: [0, 22]
-            text: "` \\\\text{cent/kWh}  `"
+            text: "` \\\\text{euro/100km}  `"
 
 
 # market demand function
@@ -484,7 +484,7 @@ layout:
 
     rightControls:
       title: Discriminazione basata su età
-      description: Selezionare un prezzo lineare da applicare ai giovani e uno da applicare agli adulti.
+      description: Selezionare una quantità da vendere ai giovani e una da vendere agli adulti.
       divs:
       - html: "`  `"
       sliders:
