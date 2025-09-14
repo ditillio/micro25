@@ -21,7 +21,11 @@ calcs:
   QA: " (params.disc == 1) ? (params.QA) : ( max((0),(20)-(calcs.PA)) ) "
   QB: " (params.disc == 1) ? (params.QB) : ( max((0),(12)-(calcs.PB)) ) "
 
+  profit0: ( (calcs.P) - (params.mc) ) * (params.Q)
 
+  profitA: ( (calcs.PA) - (params.mc) ) * (params.QA)
+  profitB: ( (calcs.PB) - (params.mc) ) * (params.QB)
+  profit1: (calcs.profitA)+(calcs.profitB)
 
 aspectRatio: 1.8
 
@@ -508,4 +512,41 @@ layout:
 
     explanation:
       divs:
-        - html: "` La funzione di domanda è rappresentata dai punti blu. `"
+        - html: "` La curva di domanda di mercato (grafico di destra) è
+                  una linea spezzata. Infatti ad un prezzo $P$ compreso tra 12 e 20 euro/100km,
+                  solo gli adulti sono disposti ad acquistare, e la quantità domandata dal 
+                  mercato è quindi $Q=Q_A=20-P$. Ad un prezzo $P$ minore di 12 euro/100km,
+                  invece, entrambi i gruppi sono disposti a comprare, e la quantità domandata dal
+                  mercato è $Q=Q_A+Q_B=32-2P$.   `"
+          show: params.disc == 0
+
+        - html: "` Quando il monopolista discrimina sulla base dell'età, tratta i due gruppi come se
+                  fossero mercati distinti, massimizzando il profitto in ciascuno di essi 
+                  separatamente.   `"
+          show: params.disc == 1
+
+        - html: "` In corrispondenza della quantità $Q=${params.Q}$ il profitto del monopolista è
+                $$
+                   ( ${calcs.P.toFixed(1)} - 2 ) \\\\times ${params.Q} = ${calcs.profit0}
+                $$
+                 `"
+          show: params.disc == 0
+
+        - html: "` In corrispondenza delle quantità $Q_A=${params.QA}$ e $Q_B=${params.QB}$
+                il profitto del monopolista è
+                $$
+                   ( ${calcs.PA.toFixed(1)} - 2 ) \\\\times ${params.QA}
+                   +
+                   ( ${calcs.PB.toFixed(1)} - 2 ) \\\\times ${params.QB}
+                   = ${calcs.profit1}
+                $$
+                 `"
+          show: params.disc == 1
+
+
+
+
+
+
+
+

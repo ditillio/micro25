@@ -21,6 +21,11 @@ calcs:
   QA: " (params.disc == 1) ? (params.QA) : ( max((0),(20)-(calcs.PA)) ) "
   QB: " (params.disc == 1) ? (params.QB) : ( max((0),(12)-(calcs.PB)) ) "
 
+  profit0: ( (calcs.P) - (params.mc) ) * (params.Q)
+
+  profitA: ( (calcs.PA) - (params.mc) ) * (params.QA)
+  profitB: ( (calcs.PB) - (params.mc) ) * (params.QB)
+  profit1: (calcs.profitA)+(calcs.profitB)
 
 
 aspectRatio: 1.8
@@ -438,12 +443,12 @@ layout:
           bgcolor: none
           show: params.disc == 1
       - Label:
-          text: " \\text{massimo profitto senza} "
+          text: " \\text{maximum profit without} "
           coordinates: [28,13]
           yPixelOffset: 9
           show: params.disc == 1
       - Label:
-          text: " \\text{discriminazione} = 98 "
+          text: " \\text{discrimination} = 98 "
           coordinates: [28,13]
           yPixelOffset: -9
           show: params.disc == 1
@@ -508,4 +513,37 @@ layout:
 
     explanation:
       divs:
-        - html: "` La funzione di domanda è rappresentata dai punti blu. `"
+        - html: "` The market demand curve (right-hand graph) is a broken line.
+                  Indeed, at a price $P$ between 12 and 20 euros/100km, only adults
+                  are willing to buy, and the quantity demanded in the market is 
+                  therefore $Q=Q_A=20-P$. At a price $P$ below 12 euros/100km, instead,
+                  both groups are willing to buy, and the quantity demanded in the 
+                  market is $Q=Q_A+Q_B=32-2P$.   `"
+          show: params.disc == 0
+
+        - html: "` When the monopolist discriminates on the basis of age, it treats the two
+                  groups as if they were separate markets, maximizing profit in each 
+                  of them separately.   `"
+          show: params.disc == 1
+
+        - html: "` At the quantity $Q=${params.Q}$ the monopolist’s profit is
+                $$
+                   ( ${calcs.P.toFixed(1)} - 2 ) \\\\times ${params.Q} = ${calcs.profit0}
+                $$
+                 `"
+          show: params.disc == 0
+
+        - html: "` At the quantities $Q_A=${params.QA}$ and $Q_B=${params.QB}$
+                the monopolist’s profit is
+                $$
+                   ( ${calcs.PA.toFixed(1)} - 2 ) \\\\times ${params.QA}
+                   +
+                   ( ${calcs.PB.toFixed(1)} - 2 ) \\\\times ${params.QB}
+                   = ${calcs.profit1}
+                $$
+                 `"
+          show: params.disc == 1
+
+
+
+
