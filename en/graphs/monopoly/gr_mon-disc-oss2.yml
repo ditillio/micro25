@@ -523,7 +523,8 @@ layout:
 
         - html: "` When the monopolist discriminates on the basis of age, it treats the two
                   groups as if they were separate markets, maximizing profit in each 
-                  of them separately.   `"
+                  of them separately.  The curves $MR_A$ and $MR_B$ represent the marginal 
+                  revenue functions in market $A$ and market $B$, respectively. `"
           show: params.disc == 1
 
         - html: "` At the quantity $Q=${params.Q}$ the monopolist’s profit is
