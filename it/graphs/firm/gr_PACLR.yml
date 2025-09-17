@@ -197,7 +197,7 @@ layout:
             fn: params.p * (x) - params.w * ((x)/(params.a))^2 - (params.fc)
             color: Darkgreen
             label:
-              text: "` R - TC `"
+              text: "` R - C `"
               x: 210
               position: bl
             strokeWidth: 1.7
