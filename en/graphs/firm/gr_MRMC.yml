@@ -255,12 +255,12 @@ layout:
         divs:
         - html: "` At price $P = ${params.p.toFixed(2)}$ the firm's optimal choice is to produce $Q=${calcs.xopt.toFixed(1)}$
                   units. Maximum profit (length of the blue segment in the top graph, or blue area in the bottom graph)
-                  is  $$ R - TC = ${calcs.accprofit.toFixed(2)}$$ `"
+                  is  $$ R - C = ${calcs.accprofit.toFixed(2)}$$ `"
           show: (calcs.accprofit > 0)
         - html: "` At price $P = ${params.p.toFixed(2)}$ the firm's optimal choice is to produce $Q=${calcs.xopt.toFixed(1)}$
                   units. Maximum profit (minus the length of the red segment in the top graph, or minus the red area in
                    the bottom graph) 
-                  is  $$ R - TC = ${calcs.accprofit.toFixed(2)}$$ `"
+                  is  $$ R - C = ${calcs.accprofit.toFixed(2)}$$ `"
           show: (calcs.accprofit < 0)
 
         - html: "` The firm cannot do better. For example, producing zero output gives a revenue of zero, but 
