@@ -269,7 +269,7 @@ layout:
                   o area verde nel grafico di sotto) dei costi fissi.`"
           show: (calcs.accprofit < 0)
         - html: "` Quando il prezzo è $P = ${params.p.toFixed(2)}$, la scelta ottima dell'impresa è produrre ${calcs.xopt.toFixed(1)}
-                  unità. Il massimo profitto  è zero:  $$ R - TC = ${calcs.accprofit.toFixed(2)}$$ `"
+                  unità. Il massimo profitto  è zero:  $$ R - C = ${calcs.accprofit.toFixed(2)}$$ `"
           show: (params.p.toFixed(1) == 2.0)
         - html: "` L'impresa non può fare di meglio. Per esempio, non producendo affatto i ricavi sarebbero
                   pari a zero e i costi sarebbero pari al costo fisso, quindi il profitto sarebbe minore:
