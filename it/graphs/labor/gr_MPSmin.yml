@@ -322,7 +322,7 @@ layout:
 
         divs:
         - html: "` `"
-        - html: "` Come in Figura L.8, in assenza di interventi statali il salario è $W^M=40$
+        - html: "` Come in Figura 9.8, in assenza di interventi statali il salario è $W^M=40$
                       e la quantità di lavoro scambiata è $L^M=2000$. `"
         - html: "` L'introduzione di un salario minimo pari a $W_\\\\text{min}=${params.minwage}$ non ha
                     alcun effetto sul mercato. `"

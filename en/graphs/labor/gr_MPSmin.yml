@@ -322,7 +322,7 @@ layout:
 
         divs:
         - html: "` `"
-        - html: "` Just like in Figure L.8, without Government intervention 
+        - html: "` Just like in Figure 9.8, without Government intervention 
                    wage is $W^M=40$
                       and employment is $L^M=2000$. `"
         - html: "` Introducing a minimum wage $W_0=${params.minwage}$ 
