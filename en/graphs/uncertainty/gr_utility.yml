@@ -120,7 +120,7 @@ layout:
         - html: "`  The individual is <b>risk neutral</b>: $$u(EP)=EU$$ `"
           show: params.pi == 1
 
-        - html: "`  The individual is <b>risk loving</b>: $$u(EP)<EU$$ `"
+        - html: "`  The individual is <b>risk loving</b>: $$u(EP) < EU$$ `"
           show: params.pi > 1
 
     explanation:

@@ -169,7 +169,7 @@ layout:
                       `"
           show: params.pi == 1
 
-        - html: "`  L'individuo è <b>propenso al rischio</b>: $$u(EP)<EU$$
+        - html: "`  L'individuo è <b>propenso al rischio</b>: $$u(EP) < EU$$
                       `"
           show: params.pi > 1
 
