@@ -1,9 +1,42 @@
 <footer class="text-muted py-5">
     <div class="container">
         <p class="float-end mb-1">
-            <a href="#">{% if include.language == "it" %}Ritorno all'inizio{% else %}Back to top{% endif %}</a>
+            <a href="#">
+                {% if include.language == "it" %}
+                    Ritorno all'inizio
+                {% else %}
+                    Back to top
+                {% endif %}
+            </a>
         </p>
-        <p class="mb-1">&copy; 2025 {{ site.data.toc.author }}</p>
+
+        <p class="mb-1">
+            &copy; 2025 {{ site.data.toc.author }}.
+        </p>
+
+        <p class="mb-1">
+            All rights reserved.
+        </p>
+
+        <p class="mb-0" style="font-size: 1.1rem; line-height: 1.4;">
+            {% if include.language == "it" %}
+                Questo materiale è fornito esclusivamente per uso didattico 
+                nell’ambito dei corsi di Microeconomia dell’Università Bocconi.
+                <br>
+                È vietata la riproduzione o distribuzione, anche parziale, 
+                senza autorizzazione scritta dell’autore.
+                <br>
+                Versione 1.0 – Settembre 2025.
+            {% else %}
+                This material is provided exclusively for instructional use 
+                in undergraduate Microeconomics courses at Bocconi University. 
+                <br>
+                Unauthorized reproduction or redistribution, in whole or in part, 
+                is prohibited without written permission of the author.
+                <br>
+                Version 1.0 – September 2025.
+            {% endif %}
+        </p>
+
     </div>
 </footer>
-
